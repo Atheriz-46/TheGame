@@ -40,10 +40,6 @@ class Connection(threading.Thread):
     def run(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
-            # if self.mode==SENDER:
-            #     self.send()
-            # else:
-            #     self.receive()
             recvThread = threading.Thread(target=self.recieve)
             sendThread = threading.Thread(target=self.send)
             recvThread.start()
