@@ -18,6 +18,8 @@ class Circle:
         return [center[0]+speed[0]*timediff,center[1] + speed[1]*timediff,center[2]]
 
     def intersects(self,other,currTime):
+        if currTime < self.otime or currTime < other.otime: 
+            return false
         auto otherPos =  other.position(currTime)
         auto myPos    =  self.position(currTime)
         return circleIntersection(*myPos,self.width,*otherPos,other.width)
