@@ -11,18 +11,16 @@ class NetworkClient:
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
-            self.sender.send(m.encode(self.parent.getState()))
+            self.communicator.send(self.parent.getState().encode('utf-16'))
     
     def recieve(self):
         while True:
-            message = self.reciever.recv(STATE_MESSAGE_SIZE).decode()
+            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
             parent.setState(message)
     
     def register(self):
-        self.sender   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.receiver = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sender.connect((self.server_ip,self.server_port)) 
-        self.reciever.connect((server_ip, PORT))  
+        self.communicator   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.communicator.connect((self.server_ip,self.server_port)) 
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
