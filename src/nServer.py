@@ -5,11 +5,13 @@ import argparse
 import time
 import sys
 from constants import *
+from overallState import OverallState
+from playerState impo
 
 class NetworkServer:
-    def __init__(self,ip = '127.0.0.1',port = 65432):
+    def __init__(self,ip = '127.0.0.1',port = 65432,game=None):
         # self.port = port
-        self.game = OverallState()
+        self.game = game
         self.sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip, self.port = ip,port
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,19 +25,19 @@ class NetworkServer:
             self.lsock.listen()
             conn, address = self.lsock.accept()
             # message = conn.recv(STATE_MESSAGE_SIZE).decode()
-            sender_object = Connection(conn,address,self.game)
-            self.game.addPlayer(sender_object)
+            player = self.game.createPlayer()
+            sender_object = Connection(player,conn,address,self.game)
             sender_object.start()
             
 
 class Connection(threading.Thread):
 
-    def __init__(self, socket,retAddr,game):
+    def __init__(self,player, socket,retAddr,game):
 
         threading.Thread.__init__(self)
         self.communicator = socket
         self.retAddr = retAddr
-        self.player = PlayerState()
+        self.player = player
         self.game = game
         
     def run(self):
