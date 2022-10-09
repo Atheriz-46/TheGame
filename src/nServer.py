@@ -23,19 +23,20 @@ class NetworkServer:
             self.lsock.listen()
             conn, address = self.lsock.accept()
             # message = conn.recv(STATE_MESSAGE_SIZE).decode()
-            sender_object = Connection(conn,address)
+            sender_object = Connection(conn,address,self.game)
             self.game.addPlayer(sender_object)
             sender_object.start()
             
 
 class Connection(threading.Thread):
 
-    def __init__(self, socket,retAddr,):
+    def __init__(self, socket,retAddr,game):
 
         threading.Thread.__init__(self)
         self.communicator = socket
         self.retAddr = retAddr
         self.player = PlayerState()
+        self.game = game
         
     def run(self):
         while True:
@@ -55,4 +56,4 @@ class Connection(threading.Thread):
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
-            self.communicator.send(self.player.getState().encode())
+            self.communicator.send(self.game.getState().encode('utf-8'))

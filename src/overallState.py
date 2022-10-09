@@ -14,5 +14,12 @@ class OverallState:
         self.players.append(player)
         
     def getState(self):
-        return json.dumps({'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons]})
+        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons]}
+    
+    def setState(self,state):
+        for k,v in state.items():
+            for old,new in zip(getattr(self,k),v):
+                old.setState(v)
+        
+            
         
