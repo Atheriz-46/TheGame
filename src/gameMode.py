@@ -1,7 +1,6 @@
 class GameMode:
-    def __init__(velocityBullets,regenBullets,maxHealth,damageScaler,maxBullets):
+    def __init__(velocityBullets,regenBullets,maxBullets,balloonSeed):
         self.velocityBullets = velocityBullets
         self.regenBullets    = regenBullets
-        self.maxHealth       = maxHealth
-        self.damageScaler    = damageScaler
         self.maxBullets      = maxBullets
+        self.balloonSeed     = balloonSeed
