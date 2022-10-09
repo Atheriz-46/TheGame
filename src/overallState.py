@@ -19,7 +19,7 @@ class OverallState:
     def setState(self,state):
         for k,v in state.items():
             for old,new in zip(getattr(self,k),v):
-                old.setState(v)
+                old.setState(new)
         
             
         
