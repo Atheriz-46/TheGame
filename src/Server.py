@@ -7,8 +7,7 @@ class Server:
         self.game = OverallState()
         self.gm = GameMode(**kwargs)
         self.network = NetworkServer(game = self.game)
-        
-        
+          
     def mergeState(self):
         pass
     

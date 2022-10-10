@@ -20,6 +20,13 @@ class Circle:
     def intersects(self,other,currTime):
         if currTime < self.otime or currTime < other.otime: 
             return false
-        auto otherPos =  other.position(currTime)
-        auto myPos    =  self.position(currTime)
+        otherPos =  other.position(currTime)
+        myPos    =  self.position(currTime)
         return circleIntersection(*myPos,self.width,*otherPos,other.width)
+
+    def getState(self):
+        return {'center':self.center,'width':self.width,'speed':self.speed,'otime':self.otime}
+    
+    def setState(self):
+        for k,v in state.items():
+            setattr(self,k,v)

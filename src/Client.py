@@ -1,7 +1,12 @@
+from tick import *
+
 class Client:
-    def shoot(self):
-        pass
+
+    def __init__(self):
+        self.eventQueue = []
+        
     def rotateClock(self):
-        pass
+        self.eventQueue.append([time(),'C'])
+    
     def rotateAntiClock(self):
-        pass
+        self.eventQueue.append([time(),'A'])

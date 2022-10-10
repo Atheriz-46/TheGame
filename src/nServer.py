@@ -6,7 +6,7 @@ import time
 import sys
 from constants import *
 from overallState import OverallState
-from playerState impo
+from playerState import PlayerState
 
 class NetworkServer:
     def __init__(self,ip = '127.0.0.1',port = 65432,game=None):
