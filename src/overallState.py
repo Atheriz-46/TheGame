@@ -31,6 +31,8 @@ class OverallState:
             return [player,1]
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
+        if len(self.players) < 2:
+            return 
         
         leftIterator  = 0
         rightIterator = 0

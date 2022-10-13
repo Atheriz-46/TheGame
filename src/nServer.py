@@ -16,10 +16,9 @@ class NetworkServer:
         self.ip, self.port = ip,port
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind((self.ip, self.port))
-        self.register()
-        # self.regThread = Thread(target=self.register)
-        # self.regThread.start()
-        # self.regThread.join()
+        self.regThread = Thread(target=self.register)
+        self.regThread.start()
+        self.regThread.join()
 
     def register(self):
 
