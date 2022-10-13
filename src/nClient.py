@@ -32,4 +32,4 @@ class NetworkClient:
         self.server_ip = server_ip
         self.server_port = server_port
         self.parent = parent
-        register()
+        self.register()

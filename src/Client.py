@@ -6,12 +6,12 @@ from threading          import Thread, Lock
 
 class Client:
     
-    def __init__(self,server_ip,server_port,velocityBullets,regenBullets,maxBullets,balloonSeed,balloonCount):
+    def __init__(self,server_ip,server_port):
         self.eventQueue     = []
         self.qMutex         = Lock()
         self.sMutex         = Lock()
         self.networkManager = NetworkClient(server_ip,server_port,self)
-        self.state          = OverallState(GameMode(regenBullets, maxBullets, balloonSeed, balloonCount))
+        self.state          = OverallState(GameMode())
         self.updateThread   = threading.Thread(target=self.updateState)
         updateThread.start()
         updateState.join()
