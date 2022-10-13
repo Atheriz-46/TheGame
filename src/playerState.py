@@ -32,7 +32,7 @@ class PlayerState:
 
     def getState(self):
         # @TODO fix this  
-        return {k: getattr(self,k) if k!='bulletsList' else getattr(self,k).getState() for k in ['points','orientation','bulletsList','center'] }
+        return {k: getattr(self,k) if k!='bulletsList' else [ getattr(self,k)[i].getState() for i in range(len(getattr(self,k))) ] for k in ['points','orientation','bulletsList','center'] }
     
     def setState(self,state):
         for k,v in state.items():
