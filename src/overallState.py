@@ -25,12 +25,10 @@ class OverallState:
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
             self.players.append(player)
-            self.parent.moveList[0] = []
             return [player,0]
         else:
             player = PlayerState(self,RIGHT_CENTER)
             self.players.append(player)
-            self.parent.moveList[1] = []
             return [player,1]
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
