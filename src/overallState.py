@@ -57,7 +57,7 @@ class OverallState:
                 leftIterator+=1
             
             while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0])<=next:
-                if rightPlayerInputs[rightIterator][1] == 'C':
+                if rightPlayerInputs[rightIterator][1] == 'A':
                     self.players[1].turnClock()
                 else: 
                     self.players[1].turnAntiClock()
@@ -87,8 +87,9 @@ class OverallState:
             
             # Generate Balloons 
             while len(self.balloons) < self.gm.balloonCount:
-                x = random.seed(self.gm.balloonSeed)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
-                y = random.seed(self.gm.balloonSeed)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
+                random.seed(self.gm.balloonSeed)
+                x = random.randint(0,655356)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
+                y = random.randint(0,655356)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
                 newBalloon = Balloon([x,y],timeFromTick(self.offset))
                 self.gm.balloonSeed+=1
                 canBeInserted = True 
@@ -106,9 +107,10 @@ class OverallState:
                     self.balloons.append(newBalloon)
         
         for currPlayer in self.players:
-            currPlayer.cleanBullets()
+            currPlayer.cleanBullets(timeFromTick(self.offset)-10)
         
     def getState(self):
+        # @TODO add gamemode and .me and offset
         return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons]}
     
     def setState(self,state):

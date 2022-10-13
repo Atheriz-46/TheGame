@@ -20,12 +20,14 @@ class Client:
         while(True):
             time.sleep(STATE_SYNC_LATENCY/2)
             self.sMutex.acquire()
+            self.qMutex.acquire()
             try:
                 if self.state.me == 0:
                     self.state.updateState(self.eventQueue,[])
                 else:
                     self.state.updateState([],self.eventQueue)
             finally:
+                self.qMutex.release()
                 self.sMutex.release()
 
     def rotateClock(self):

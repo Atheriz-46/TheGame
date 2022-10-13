@@ -39,7 +39,7 @@ class Server:
         finally:
             self.qMutex.release()
 
-    def getGameCopy():
+    def getGameCopy(self):
         self.sMutex.acquire()
         try:
             cp = self.game.copy()
