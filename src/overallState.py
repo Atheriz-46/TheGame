@@ -87,8 +87,8 @@ class OverallState:
             
             # Generate Balloons 
             while len(self.balloons) < self.gm.balloonCount:
-                x = random.seed(self.gm.balloonSeed)%ARENA_X_BOUNDARY 
-                y = random.seed(self.gm.balloonSeed)%ARENA_Y_BOUNDARY
+                x = random.seed(self.gm.balloonSeed)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
+                y = random.seed(self.gm.balloonSeed)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
                 newBalloon = Balloon([x,y],timeFromTick(self.offset))
                 self.gm.balloonSeed+=1
                 canBeInserted = True 
