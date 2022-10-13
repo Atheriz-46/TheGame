@@ -14,12 +14,12 @@ class Circle:
         self.otime   = otime 
 
     def position(self,currTime):
-        timediff = currTime - otime 
-        return [center[0]+speed[0]*timediff,center[1] + speed[1]*timediff,center[2]]
+        timediff = currTime - self.otime 
+        return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
 
     def intersects(self,other,currTime):
         if currTime < self.otime or currTime < other.otime: 
-            return false
+            return False
         otherPos =  other.position(currTime)
         myPos    =  self.position(currTime)
         return circleIntersection(*myPos,self.width,*otherPos,other.width)
@@ -28,5 +28,5 @@ class Circle:
         return {'center':self.center,'width':self.width,'speed':self.speed,'otime':self.otime}
     
     def setState(self):
-        for k,v in state.items():
+        for k,v in self.state.items():
             setattr(self,k,v)
