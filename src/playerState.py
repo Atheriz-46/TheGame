@@ -37,7 +37,12 @@ class PlayerState:
     def setState(self,state):
         for k,v in state.items():
             if k=='bulletList':
-                getattr(self,k).setState(v)
+                newBulletList = []
+                for i in v :
+                    newBulletList.append(Bullet(**i))
+
+                setattr(self,k, newBulletList)
+
             else:
                 setattr(self,k,v)
                 
