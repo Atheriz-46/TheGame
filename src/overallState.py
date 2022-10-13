@@ -31,19 +31,20 @@ class OverallState:
             return [player,1]
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
+        if len(self.players) < 2:
+            return 
         
         leftIterator  = 0
         rightIterator = 0
 
         # Ignore Inputs that occured before the state 
-        while leftIterator!=len(leftPlayerInputs):
-            if tickValue(leftPlayerInputs[leftIterator][0]) <= self.offset:
-                leftIterator+=1
+        while leftIterator!=len(leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0]) <= self.offset:
+            leftIterator+=1
             
-        while rightIterator!=len(rightPlayerInputs):
-            if tickValue(rightPlayerInputs[rightIterator][0]) <= self.offset:
-                rightIterator+=1
-        
+        while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0]) <= self.offset:
+            rightIterator+=1
+            
+
         #Process Inputs that occured after current state
         while leftIterator!=len(leftPlayerInputs) and rightIterator!=len(rightPlayerInputs): 
             
@@ -57,7 +58,7 @@ class OverallState:
                 leftIterator+=1
             
             while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0])<=next:
-                if rightPlayerInputs[rightIterator][1] == 'C':
+                if rightPlayerInputs[rightIterator][1] == 'A':
                     self.players[1].turnClock()
                 else: 
                     self.players[1].turnAntiClock()
@@ -73,22 +74,23 @@ class OverallState:
 
             newBalloonList = []
             # Process Bullets hitting Balloons 
-            for ballon in self.balloons:
+            for balloon in self.balloons:
                 flag = True 
                 for currPlayer in self.players:
-                    for bullet in self.bulletsList:
-                        if ballon.intersects(bullet,timeFromTick(self.offset)):
+                    for bullet in currPlayer.bulletsList:
+                        if balloon.intersects(bullet,timeFromTick(self.offset)):
                             flag = False
                             currPlayer.points+=1
                 if flag:
-                    newBalloonList.append(ballon)
+                    newBalloonList.append(balloon)
             
             self.balloons = newBalloonList
             
             # Generate Balloons 
             while len(self.balloons) < self.gm.balloonCount:
-                x = random.seed(self.gm.balloonSeed)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
-                y = random.seed(self.gm.balloonSeed)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
+                random.seed(self.gm.balloonSeed)
+                x = random.randint(0,655356)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
+                y = random.randint(0,655356)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
                 newBalloon = Balloon([x,y],timeFromTick(self.offset))
                 self.gm.balloonSeed+=1
                 canBeInserted = True 
@@ -98,7 +100,7 @@ class OverallState:
                         canBeInserted = False
 
                 for currPlayer in self.players:
-                    for bullet in self.bulletsList:
+                    for bullet in currPlayer.bulletsList:
                         if bullet.intersects(newBalloon,timeFromTick(self.offset)):
                             canBeInserted = False
 
@@ -106,15 +108,37 @@ class OverallState:
                     self.balloons.append(newBalloon)
         
         for currPlayer in self.players:
-            currPlayer.cleanBullets()
+            currPlayer.cleanBullets(timeFromTick(self.offset)-10)
         
     def getState(self):
-        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons]}
+        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons], 'offset' : self.offset, 'me': self.me, 'gm' : self.gm.getState()}
     
     def setState(self,state):
-        for k,v in state.items():
-            for old,new in zip(getattr(self,k),v):
-                old.setState(new)
+
+        for k, v in state.items():
+            if (k == 'gm'):
+                # Potential Error
+                getattr(self, k).setState(v)
+
+            elif (k in ['offset', 'me']):
+                setattr(self, k, v)
+
+            elif (k == 'balloons'):
+                newBalloons = []
+                for i in v:
+                    newBalloons.append(Balloon(**v))
+                setattr(self, k, newBalloons)
+            
+            else:
+                newPlayers = []
+                for i in v:
+
+                    player = PlayerState(self, [0,0])
+                    player.setState(i)
+                    newPlayers.append(player)
+
+                setattr(self, k, newPlayers)
+
 
     def changeTimeBy(x):
 

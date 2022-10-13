@@ -10,15 +10,16 @@ from playerState import PlayerState
 
 class NetworkServer:
     def __init__(self,parent,ip = '127.0.0.1',port = 65432,game=None):
-        # self.port = port
         self.game = game
         self.parent = parent
         self.sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip, self.port = ip,port
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind((self.ip, self.port))
+        self.regThread = Thread(target=self.register)
+        self.regThread.start()
+        self.regThread.join()
 
-        # self.server.bind(('
     def register(self):
 
         while True:
@@ -58,18 +59,19 @@ class Connection(threading.Thread):
             newMessage = message.split(" ",2)
             currTime = int(newMessage[0])
             if self.delta == 0:
-                delta = time.time() - currTime
+                self.delta = time.time() - currTime
             else : 
-                delta = ALPHA*delta + (1 - ALPHA)*(time.time() - currTime)
+                self.delta = ALPHA*delta + (1 - ALPHA)*(time.time() - currTime)
             
-            moveList = json.loads(newMessage[1]) # get from newMessage[1]
-            # update timestamps in moveList  
+            moveList = json.loads(newMessage[1])
+            for i in moveList:
+                i[0] += self.delta
             self.parent.addMoves(self.playerNumber,moveList)
 
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
             cpState = self.parent.getGameCopy()
-            cpState.changeTimeBy(self.delta)
+            cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber
             self.communicator.send(self.game.getState().encode('utf-8'))

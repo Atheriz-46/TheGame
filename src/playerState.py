@@ -8,9 +8,7 @@ class PlayerState:
         self.parent = parent
         self.center = center 
         self.orientation = 45
-        # self.x,self.y,self.t = [],[],[]
         self.bulletsList = []
-        # self.bulletLeft = self.parent.gm.maxBullets
         self.points = 0
 
     def cleanBullets(self,x):
@@ -33,12 +31,18 @@ class PlayerState:
         self.orientation = max(0,self.orientation) 
 
     def getState(self):
-        return {k: getattr(self,k) if k!='bulletsList' else getattr(self,k).getState() for k in ['point','x','y','t','orientations','bulletsList','bulletLeft'] }
+        # @TODO fix this  
+        return {k: getattr(self,k) if k!='bulletsList' else [ getattr(self,k)[i].getState() for i in range(len(getattr(self,k))) ] for k in ['points','orientation','bulletsList','center'] }
     
     def setState(self,state):
         for k,v in state.items():
             if k=='bulletList':
-                getattr(self,k).setState(v)
+                newBulletList = []
+                for i in v :
+                    newBulletList.append(Bullet(**i))
+
+                setattr(self,k, newBulletList)
+
             else:
                 setattr(self,k,v)
                 
