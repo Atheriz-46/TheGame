@@ -111,13 +111,34 @@ class OverallState:
             currPlayer.cleanBullets(timeFromTick(self.offset)-10)
         
     def getState(self):
-        # @TODO add gamemode and .me and offset
-        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons]}
+        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons], 'offset' : self.offset, 'me': self.me, 'gm' : self.gm.getState()}
     
     def setState(self,state):
-        for k,v in state.items():
-            for old,new in zip(getattr(self,k),v):
-                old.setState(new)
+
+        for k, v in state.items():
+            if (k == 'gm'):
+                # Potential Error
+                getattr(self, k).setState(v)
+
+            elif (k in ['offset', 'me']):
+                setattr(self, k, v)
+
+            elif (k == 'balloons'):
+                newBalloons = []
+                for i in v:
+                    newBalloons.append(Balloon(**v))
+                setattr(self, k, newBalloons)
+            
+            else:
+                newPlayers = []
+                for i in v:
+
+                    player = PlayerState(self, [0,0])
+                    player.setState(i)
+                    newPlayers.append(player)
+
+                setattr(self, k, newPlayers)
+
 
     def changeTimeBy(x):
 
