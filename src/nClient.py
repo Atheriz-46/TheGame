@@ -16,7 +16,7 @@ class NetworkClient:
     def recieve(self):
         while True:
             message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
-            parent.setState(message)
+            self.parent.setState(message)
     
     def register(self):
         self.communicator   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
