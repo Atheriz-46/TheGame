@@ -1,3 +1,4 @@
+from GUIManager import GUIManager
 from tick               import *
 from nClient            import NetworkClient
 from overallState       import OverallState
@@ -12,9 +13,10 @@ class Client:
         self.sMutex         = Lock()
         self.networkManager = NetworkClient(server_ip,server_port,self)
         self.state          = OverallState(GameMode())
-        self.updateThread   = threading.Thread(target=self.updateState)
-        updateThread.start()
-        updateState.join()
+        self.updateThread   = Thread(target=self.updateState)
+        self.updateThread.start()
+        self.updateState.join()
+        self.gui = GUIManager(self)
         
     def updateState(self):
         while(True):
@@ -25,6 +27,8 @@ class Client:
                     self.state.updateState(self.eventQueue,[])
                 else:
                     self.state.updateState([],self.eventQueue)
+                if len(self.state.players)>=2:
+                    self.gui.startGame()
             finally:
                 self.sMutex.release()
 
@@ -57,3 +61,10 @@ class Client:
             self.OverallState.setState(state)   
         finally:
             self.sMutex.release()
+    def getGameCopy(self):
+        self.sMutex.acquire()
+        try:
+            cp = self.game.copy()
+        finally:
+            self.sMutex.release()
+        return cp 
