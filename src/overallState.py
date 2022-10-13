@@ -36,14 +36,13 @@ class OverallState:
         rightIterator = 0
 
         # Ignore Inputs that occured before the state 
-        while leftIterator!=len(leftPlayerInputs):
-            if tickValue(leftPlayerInputs[leftIterator][0]) <= self.offset:
-                leftIterator+=1
+        while leftIterator!=len(leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0]) <= self.offset:
+            leftIterator+=1
             
-        while rightIterator!=len(rightPlayerInputs):
-            if tickValue(rightPlayerInputs[rightIterator][0]) <= self.offset:
-                rightIterator+=1
-        
+        while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0]) <= self.offset:
+            rightIterator+=1
+            
+
         #Process Inputs that occured after current state
         while leftIterator!=len(leftPlayerInputs) and rightIterator!=len(rightPlayerInputs): 
             
@@ -73,15 +72,15 @@ class OverallState:
 
             newBalloonList = []
             # Process Bullets hitting Balloons 
-            for ballon in self.balloons:
+            for balloon in self.balloons:
                 flag = True 
                 for currPlayer in self.players:
-                    for bullet in self.bulletsList:
-                        if ballon.intersects(bullet,timeFromTick(self.offset)):
+                    for bullet in currPlayer.bulletsList:
+                        if balloon.intersects(bullet,timeFromTick(self.offset)):
                             flag = False
                             currPlayer.points+=1
                 if flag:
-                    newBalloonList.append(ballon)
+                    newBalloonList.append(balloon)
             
             self.balloons = newBalloonList
             
@@ -99,7 +98,7 @@ class OverallState:
                         canBeInserted = False
 
                 for currPlayer in self.players:
-                    for bullet in self.bulletsList:
+                    for bullet in currPlayer.bulletsList:
                         if bullet.intersects(newBalloon,timeFromTick(self.offset)):
                             canBeInserted = False
 
