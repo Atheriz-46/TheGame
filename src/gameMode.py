@@ -4,3 +4,11 @@ class GameMode:
         self.regenBullets    = regenBullets
         self.balloonSeed     = balloonSeed
         self.balloonCount    = balloonCount
+
+    def getState(self):
+    	return {'velocityBullets' : self.velocityBullets, 'regenBullets': self.regenBullets, 'balloonSeed' : self.balloonSeed, 'balloonCount' : self.balloonCount}
+
+    def setState(self, state):
+
+        for k,v in state.items():
+        	setattr(self,k,v)		
