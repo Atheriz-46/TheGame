@@ -21,7 +21,6 @@ class OverallState:
         if len(self.players)+1 > self.gm.nplayers:
             raise Exception(f"Lobby Full. Lobby limit is {self.gm.nplayers}")
         
-        # @TODO make thread safe 
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
             self.players.append(player)

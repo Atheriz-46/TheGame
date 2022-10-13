@@ -9,14 +9,14 @@ from overallState import OverallState
 from playerState import PlayerState
 
 class NetworkServer:
-    def __init__(self,ip = '127.0.0.1',port = 65432,game=None):
+    def __init__(self,parent,ip = '127.0.0.1',port = 65432,game=None):
         # self.port = port
         self.game = game
+        self.parent = parent
         self.sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip, self.port = ip,port
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind((self.ip, self.port))
-
 
         # self.server.bind(('
     def register(self):
@@ -24,12 +24,14 @@ class NetworkServer:
         while True:
             self.lsock.listen()
             conn, address = self.lsock.accept()
-            # message = conn.recv(STATE_MESSAGE_SIZE).decode()
-            player,playerNumber = self.game.createPlayer()
-            sender_object = Connection(player,conn,address,self.game,playerNumber)
-            sender_object.start()
+            self.parent.sMutex.acquire()
+            try:
+                player,playerNumber = self.game.createPlayer()
+                sender_object = Connection(player,conn,address,self.game,playerNumber)
+                sender_object.start()
+            finally:
+                self.sMutex.release()
             
-
 class Connection(threading.Thread,player_id):
 
     def __init__(self,player, socket,retAddr,game,playerNumber):

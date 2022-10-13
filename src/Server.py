@@ -6,7 +6,7 @@ class Server:
     def __init__(self,**kwargs):
         self.game = OverallState()
         self.gm = GameMode(**kwargs)
-        self.network = NetworkServer(game = self.game)
+        self.network = NetworkServer(parent = self,game = self.game)
         self.moveList = [] 
         self.moveList.append([])
         self.moveList.append([])
