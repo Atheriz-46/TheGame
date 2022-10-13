@@ -25,23 +25,23 @@ class NetworkServer:
             self.lsock.listen()
             conn, address = self.lsock.accept()
             # message = conn.recv(STATE_MESSAGE_SIZE).decode()
-            player = self.game.createPlayer()
-            sender_object = Connection(player,conn,address,self.game)
+            player,playerNumber = self.game.createPlayer()
+            sender_object = Connection(player,conn,address,self.game,playerNumber)
             sender_object.start()
             
 
-class Connection(threading.Thread):
+class Connection(threading.Thread,player_id):
 
-    def __init__(self,player, socket,retAddr,game):
-
+    def __init__(self,player, socket,retAddr,game,playerNumber):
         threading.Thread.__init__(self)
         self.communicator = socket
         self.retAddr = retAddr
+        self.playerNumber = playerNumber 
         self.player = player
         self.game = game
+        self.delta = 0
         
     def run(self):
-        
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
@@ -53,8 +53,20 @@ class Connection(threading.Thread):
     def receive(self):
         while True:
             message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
-            self.player.setState(message)
+            newMessage = message.split(" ",2)
+            currTime = int(newMessage[0])
+            if self.delta == 0:
+                delta = time.time() - currTime
+            else : 
+                delta = ALPHA*delta + (1 - ALPHA)*(time.time() - currTime)
+            moveList = [] # get from newMessage[1]
+            # update timestamps in moveList  
+            self.parent.addMoves(self.playerNumber,moveList)
+
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
+            cpState = self.parent.getGameCopy()
+            cpState.changeTimeBy(self.delta)
+            cpState.me = self.playerNumber
             self.communicator.send(self.game.getState().encode('utf-8'))

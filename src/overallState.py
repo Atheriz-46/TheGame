@@ -21,14 +21,17 @@ class OverallState:
         if len(self.players)+1 > self.gm.nplayers:
             raise Exception(f"Lobby Full. Lobby limit is {self.gm.nplayers}")
         
+        # @TODO make thread safe 
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
             self.players.append(player)
-            return player
+            self.parent.moveList[0] = []
+            return [player,0]
         else:
             player = PlayerState(self,RIGHT_CENTER)
             self.players.append(player)
-            return player
+            self.parent.moveList[1] = []
+            return [player,1]
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
         
@@ -89,7 +92,7 @@ class OverallState:
             while len(self.balloons) < self.gm.balloonCount:
                 x = random.seed(self.gm.balloonSeed)%ARENA_X_BOUNDARY 
                 y = random.seed(self.gm.balloonSeed)%ARENA_Y_BOUNDARY
-                newBalloon = Balloon([x,y],time())
+                newBalloon = Balloon([x,y],timeFromTick(self.offset))
                 self.gm.balloonSeed+=1
                 canBeInserted = True 
                 
@@ -115,6 +118,17 @@ class OverallState:
         for k,v in state.items():
             for old,new in zip(getattr(self,k),v):
                 old.setState(new)
+
+    def changeTimeBy(x):
+
+        # change offset 
+        self.offset += tickValue(x)
         
-            
-        
+        # update balloon
+        for balloon in self.balloons:
+            balloon.otime += x 
+
+        # update players 
+        for player in self.players:
+            for bullet in player.bulletList:
+                bullet.otime += x 
