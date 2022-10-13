@@ -42,10 +42,10 @@ class Client:
         finally:
             self.qMutex.release()
 
-    def getState():
+    def getState(self):
         self.qMutex.acquire()
         try:
-            ret = {x.getState() for x in self.eventQueue}
+            ret = [x.getState() for x in self.eventQueue]
             self.eventQueue = []
         finally:
             self.qMutex.release()

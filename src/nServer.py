@@ -61,7 +61,8 @@ class Connection(threading.Thread,player_id):
                 delta = time.time() - currTime
             else : 
                 delta = ALPHA*delta + (1 - ALPHA)*(time.time() - currTime)
-            moveList = [] # get from newMessage[1]
+            
+            moveList = json.loads(newMessage[1]) # get from newMessage[1]
             # update timestamps in moveList  
             self.parent.addMoves(self.playerNumber,moveList)
 
