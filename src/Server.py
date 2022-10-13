@@ -22,11 +22,13 @@ class Server:
         while(True):
             sleep(STATE_SYNC_LATENCY/2)
             self.sMutex.acquire()
+            self.qMutex.acquire()
             try:
                 self.game.updateState(self.moveList[0],self.moveList[1])
                 self.moveList[0] = []
                 self.moveList[1] = []
             finally:
+                self.qMutex.release()
                 self.sMutex.release()
     
     def addMoves(self,playerNumber,mList):
@@ -44,5 +46,3 @@ class Server:
         finally:
             self.sMutex.release()
         return cp 
-
-sv = Server()
