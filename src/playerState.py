@@ -1,6 +1,7 @@
 import math
-import tick 
+from tick import * 
 from constants import *
+from bullet import Bullet
 
 class PlayerState:
     def __init__(self,parent,center):
