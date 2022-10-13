@@ -1,29 +1,31 @@
-from src.overallState import OverallState
-from src.gameMode import GameMode
-from src.Network import NetworkServer
- 
+from overallState   import OverallState
+from gameMode       import GameMode
+from nServer        import NetworkServer
+from threading      import Thread, Lock
+from tick           import *
+from time           import sleep
 class Server:
     def __init__(self,**kwargs):
-        self.game = OverallState()
         self.gm = GameMode(**kwargs)
+        self.game = OverallState(self.gm)
         self.network = NetworkServer(parent = self,game = self.game)
         self.moveList = [] 
         self.moveList.append([])
         self.moveList.append([])
         self.qMutex         = Lock()
         self.sMutex         = Lock()
-        self.updateThread   = threading.Thread(target=self.updateState)
-        updateThread.start()
-        updateState.join()
+        self.updateThread   = Thread(target=self.updateState)
+        self.updateThread.start()
+        self.updateThread.join()
           
     def updateState(self):
         while(True):
-            time.sleep(STATE_SYNC_LATENCY/2)
+            sleep(STATE_SYNC_LATENCY/2)
             self.sMutex.acquire()
             try:
-                self.state.updateState(self.parent.moveList[0],self.parent.moveList[1])
-                moveList[0] = []
-                moveList[1] = []
+                self.game.updateState(self.moveList[0],self.moveList[1])
+                self.moveList[0] = []
+                self.moveList[1] = []
             finally:
                 self.sMutex.release()
     
@@ -42,3 +44,5 @@ class Server:
         finally:
             self.sMutex.release()
         return cp 
+
+sv = Server()

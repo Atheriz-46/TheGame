@@ -1,7 +1,7 @@
 import json
-from src.tick           import *
-from src.constants      import *
-from src.playerState    import PlayerState
+from tick               import *
+from constants          import *
+from playerState        import PlayerState
 from random             import random,seed
 
 class OverallState:
@@ -36,27 +36,27 @@ class OverallState:
         rightIterator = 0
 
         # Ignore Inputs that occured before the state 
-        while leftIterator!=len(self.leftPlayerInputs):
+        while leftIterator!=len(leftPlayerInputs):
             if tickValue(leftPlayerInputs[leftIterator][0]) <= self.offset:
                 leftIterator+=1
             
-        while rightIterator!=len(self.rightPlayerInputs):
+        while rightIterator!=len(rightPlayerInputs):
             if tickValue(rightPlayerInputs[rightIterator][0]) <= self.offset:
                 rightIterator+=1
         
         #Process Inputs that occured after current state
-        while leftIterator!=len(self.leftPlayerInputs) and rightIterator!=len(self.rightPlayerInputs): 
+        while leftIterator!=len(leftPlayerInputs) and rightIterator!=len(rightPlayerInputs): 
             
             next = self.offset + 1
 
-            while leftIterator!=len(self.leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0])<=next:
+            while leftIterator!=len(leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0])<=next:
                 if leftPlayerInputs[leftIterator][1] == 'C':
                     self.players[0].turnClock()
                 else: 
                     self.players[0].turnAntiClock()
                 leftIterator+=1
             
-            while rightIterator!=len(self.rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0])<=next:
+            while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0])<=next:
                 if rightPlayerInputs[rightIterator][1] == 'C':
                     self.players[1].turnClock()
                 else: 

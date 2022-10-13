@@ -1,7 +1,7 @@
 from tick               import *
-from src.nClient        import NetworkClient
-from src.overallState   import OverallState
-from src.gameMode       import GameMode
+from nClient            import NetworkClient
+from overallState       import OverallState
+from gameMode           import GameMode
 from threading          import Thread, Lock
 
 class Client:

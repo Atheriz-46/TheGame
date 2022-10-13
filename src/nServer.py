@@ -32,7 +32,7 @@ class NetworkServer:
             finally:
                 self.sMutex.release()
             
-class Connection(threading.Thread,player_id):
+class Connection(threading.Thread):
 
     def __init__(self,player, socket,retAddr,game,playerNumber):
         threading.Thread.__init__(self)
