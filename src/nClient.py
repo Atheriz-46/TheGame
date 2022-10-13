@@ -11,7 +11,7 @@ class NetworkClient:
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
-            self.communicator.send(self.parent.getState().encode('utf-16'))
+            self.communicator.send((str(time.time())+" "+self.parent.getState()).encode('utf-16'))
     
     def recieve(self):
         while True:

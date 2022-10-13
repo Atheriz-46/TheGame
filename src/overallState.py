@@ -1,8 +1,8 @@
 import json
-from src.tick        import *
-from src.constants   import *
-from src.playerState import PlayerState
-from random          import random,seed
+from src.tick           import *
+from src.constants      import *
+from src.playerState    import PlayerState
+from random             import random,seed
 
 class OverallState:
 
@@ -14,6 +14,7 @@ class OverallState:
         self.balloons = []
         self.gm = gameMode
         self.offset = currTicks()
+        self.me     = 0
     
     def createPlayer(self):
         

@@ -41,14 +41,13 @@ class Connection(threading.Thread):
         self.game = game
         
     def run(self):
-        while True:
-            time.sleep(STATE_SYNC_LATENCY)
-            recvThread = threading.Thread(target=self.recieve)
-            sendThread = threading.Thread(target=self.send)
-            recvThread.start()
-            sendThread.start()
-            recvThread.join()
-            sendThread.join()
+        
+        recvThread = threading.Thread(target=self.recieve)
+        sendThread = threading.Thread(target=self.send)
+        recvThread.start()
+        sendThread.start()
+        recvThread.join()
+        sendThread.join()
 
 
     def receive(self):

@@ -12,7 +12,22 @@ class Client:
         self.sMutex         = Lock()
         self.networkManager = NetworkClient(server_ip,server_port,self)
         self.state          = OverallState(GameMode(regenBullets, maxBullets, balloonSeed, balloonCount))
- 
+        self.updateThread   = threading.Thread(target=self.updateState)
+        updateThread.start()
+        updateState.join()
+        
+    def updateState(self):
+        while(True):
+            time.sleep(STATE_SYNC_LATENCY/2)
+            self.sMutex.acquire()
+            try:
+                if self.state.me == 0:
+                    self.state.updateState(self.eventQueue,[])
+                else:
+                    self.state.updateState([],self.eventQueue)
+            finally:
+                self.sMutex.release()
+
     def rotateClock(self):
         self.qMutex.acquire()
         try:

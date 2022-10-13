@@ -7,9 +7,9 @@ class PlayerState:
         self.parent = parent
         self.center = center 
         self.orientation = 45
-        self.x,self.y,self.t = [],[],[]
+        # self.x,self.y,self.t = [],[],[]
         self.bulletsList = []
-        self.bulletLeft = self.parent.gm.maxBullets
+        # self.bulletLeft = self.parent.gm.maxBullets
         self.points = 0
 
     def cleanBullets(self,x):
@@ -24,11 +24,11 @@ class PlayerState:
         self.bulletLeft.append(newBullet)
 
     def turnClock(self):
-        self.orientation += 5  
+        self.orientation += SENSTIVITY  
         self.orientation = min(90,self.orientation) 
 
     def turnAntiClock(self):
-        self.orientation -= 5
+        self.orientation -= SENSTIVITY
         self.orientation = max(0,self.orientation) 
 
     def getState(self):
