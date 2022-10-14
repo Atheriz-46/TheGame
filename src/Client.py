@@ -8,11 +8,12 @@ from threading          import Thread, Lock
 from AskIP import AskIP
 class Client:
     
-    def __init__(self,server_ip,server_port):
+    def __init__(self,server_ip,server_port,latencyMode = 0):
         self.eventQueue     = []
         self.qMutex         = Lock()
         self.sMutex         = Lock()
         self.state          = OverallState(GameMode())
+        self.latencyMode    = latencyMode
         # print("Reached here 1")
         # AskIP()
         #TODO Add askIP
