@@ -8,6 +8,8 @@ from PIL import Image, ImageTk
 class GUIManager(Tk):
     def __init__(self,parent):
         Tk.__init__(self)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.parent = parent
         self.graphics = Graphics(self)
         self.graphics.grid(row=0, column=0, sticky="nsew")
@@ -47,6 +49,7 @@ class GUIManager(Tk):
 class StartMenu(Frame):
     def __init__(self,parent):
         Frame.__init__(self, parent)
+        
         self.parent = parent
         image1 = Image.open("./test.jpeg")
         test = ImageTk.PhotoImage(image1)
@@ -68,20 +71,25 @@ class EndMenu(Frame):
 class Graphics(Frame):
     def __init__(self,parent):
         Frame.__init__(self,master = parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.parent = parent
         self.canvas = Canvas(self)
-        self.canvas.pack(fill=BOTH, expand=1)
-        self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY*100
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.draw()
-        # self.drawThread   = Thread(target=self.draw)
-        # self.drawThread.start()
-        # self.drawThread.detach()
-    # def update(self): 
-        # self.parent.getState()
+        
         
     
     def draw(self):
-
+        self.master.update()
+        w,h = self.winfo_width(),self.winfo_height()
+        self.scale = min(w,h)/ARENA_X_BOUNDARY
+        if w>h:
+            self.shift_x,self.shift_y = (w-h)/2,0
+        else: 
+            self.shift_x,self.shift_y = 0,(h-w)/2
+       
         state = self.parent.parent.getGameCopy()
         self.canvas.delete("balloon")
         self.canvas.delete("bullet")
@@ -108,16 +116,17 @@ class Graphics(Frame):
         
     def circle(self,x,y,r,fill='blue',tags='bullet'):
         # TODO: Fill the Circle                         
-        x,y,r = (x*self.scale,y*self.scale,r*self.scale)
+        x,y,r = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,r*self.scale)
         self.canvas.create_oval(x-r,y-r,x+r,y+r,
                                 fill='blue',
                                 tags='bullet',
                                     )      
     def draw_gun(self,player,side):
         x,y=player.center
+        # orientation = player.orientation
         orientation = player.orientation if side==0 else 180-player.orientation
         x1,y1 = x+  math.cos(orientation*0.0174)*GUN_SIZE,y+math.sin(orientation*0.0174)*GUN_SIZE
-        x,y,x1,y1 = (x*self.scale,y*self.scale,x1*self.scale,y1*self.scale)
+        x,y,x1,y1 = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,x1*self.scale+self.shift_x,y1*self.scale+self.shift_y)
         self.canvas.create_line(x,y,x1,y1, fill="black", width=GUN_WIDTH*self.scale,tags='shooter')
     
     
