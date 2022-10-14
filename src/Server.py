@@ -28,7 +28,7 @@ class Server:
                 self.leftGame = 0
                 self.flush()
         finally:
-            lMutex.release()
+            self.lMutex.release()
         
     def updateState(self):
         while(True):
@@ -56,8 +56,8 @@ class Server:
         self.qMutex.acquire()
         try:
             self.game = OverallState(self.gm)
-            moveList[0] = []
-            moveList[1] = []
+            self.moveList[0] = []
+            self.moveList[1] = []
         finally:
             self.qMutex.release()
             self.sMutex.release()
