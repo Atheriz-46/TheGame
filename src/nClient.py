@@ -11,18 +11,28 @@ import json
 class NetworkClient:
     
     def send(self):
-        while True:
+        while self.active:
             T.sleep(max(STATE_SYNC_LATENCY,self.parent.latencyMode))
-            self.communicator.send((str(time())+" "+json.dumps(self.parent.getState())).encode('utf-16'))
-    
+            try:
+                self.communicator.send((str(time())+" "+json.dumps(self.parent.getState())).encode('utf-16'))
+            except:
+                self.active = False
+
     def recieve(self):
-        while True:
-            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+        while self.active:
+            try:
+                message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+            except:
+                self.active = False
+                break
             if self.parent.latencyMode:
                 T.sleep(self.parent.latencyMode)
             message = json.loads(message)
             self.parent.setState(message)
-    
+            cp = self.parent.getGameCopy()
+            if(cp.gameEnded):
+                self.active = False
+
     def register(self):
         self.communicator   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.communicator.connect((self.server_ip,self.server_port)) 
@@ -30,11 +40,11 @@ class NetworkClient:
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
         sendThread.start()
-        # recvThread.detach()
-        # sendThread.detach()
+        self.parent.gui.endMenu.tkraise()
 
     def __init__(self,server_ip,server_port,parent):
         self.server_ip = server_ip
         self.server_port = server_port
         self.parent = parent
+        self.active = True
         self.register()
