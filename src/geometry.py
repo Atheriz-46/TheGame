@@ -30,3 +30,6 @@ class Circle:
     def setState(self):
         for k,v in self.state.items():
             setattr(self,k,v)
+
+    def copy(self):
+        return Circle.(**self.getState())
