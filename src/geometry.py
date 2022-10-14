@@ -32,4 +32,4 @@ class Circle:
             setattr(self,k,v)
 
     def copy(self):
-        return Circle.(**self.getState())
+        return Circle(**self.getState())
