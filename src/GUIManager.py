@@ -5,7 +5,7 @@ from tick import *
 from constants import *
 import keyboard
 from PIL import Image, ImageTk
-class GUIManager(Tk):
+class GUIManager(Tk.tk):
     def __init__(self,parent):
         Tk.__init__(self)
         self.parent = parent
