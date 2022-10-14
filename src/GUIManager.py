@@ -5,11 +5,12 @@ from tick import *
 from constants import *
 import keyboard
 from PIL import Image, ImageTk
-class GUIManager(Tk.tk):
+class GUIManager(Tk):
     def __init__(self,parent):
         Tk.__init__(self)
         self.parent = parent
-
+        self.graphics = Graphics(self)
+        self.graphics.grid(row=0, column=0, sticky="nsew")
         self.endMenu = EndMenu(self)
         self.endMenu.grid(row=0, column=0, sticky="nsew")
         self.startMenu = StartMenu(self)
@@ -18,8 +19,6 @@ class GUIManager(Tk.tk):
 
     def startGame(self):
         if not self.isStarted:
-            self.graphics = Graphics(self)
-            self.graphics.grid(row=0, column=0, sticky="nsew")
             self.graphics.tkraise()
             self.keyboardThread   = Thread(target=self.keyboard)
             self.keyboardThread.start()
@@ -66,7 +65,7 @@ class EndMenu(Frame):
 
 class Graphics(Frame):
     def __init__(self,parent):
-        Frame.__init__(self, parent)
+        Frame.__init__(self,master = parent)
         self.parent = parent
         self.canvas = Canvas(self)
         self.canvas.pack(fill=BOTH, expand=1)
