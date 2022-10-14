@@ -17,6 +17,7 @@ class NetworkClient:
     def recieve(self):
         while True:
             message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
+            message = json.loads(message)
             self.parent.setState(message)
     
     def register(self):
@@ -26,8 +27,8 @@ class NetworkClient:
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
         sendThread.start()
-        recvThread.join()
-        sendThread.join()
+        recvThread.detach()
+        sendThread.detach()
 
     def __init__(self,server_ip,server_port,parent):
         self.server_ip = server_ip

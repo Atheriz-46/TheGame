@@ -5,6 +5,7 @@ from nClient            import NetworkClient
 from overallState       import OverallState
 from gameMode           import GameMode
 from threading          import Thread, Lock
+from AskIP import AskIP
 class Client:
     
     def __init__(self,server_ip,server_port):
@@ -12,11 +13,15 @@ class Client:
         self.qMutex         = Lock()
         self.sMutex         = Lock()
         self.state          = OverallState(GameMode())
+        # print("Reached here 1")
+        # AskIP()
+        #TODO Add askIP
+        # print("Reached here 2")
+        self.networkManager = NetworkClient(server_ip,server_port,self)
+        self.gui = GUIManager(self)
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
         self.updateThread.join()
-        self.networkManager = NetworkClient(server_ip,server_port,self)
-        self.gui = GUIManager(self)
         
     def updateState(self):
         while(True):
@@ -66,7 +71,7 @@ class Client:
     def getGameCopy(self):
         self.sMutex.acquire()
         try:
-            cp = self.game.copy()
+            cp = self.state.copy()
         finally:
             self.sMutex.release()
         return cp 

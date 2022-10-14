@@ -140,7 +140,7 @@ class OverallState:
                 setattr(self, k, newPlayers)
 
 
-    def changeTimeBy(x):
+    def changeTimeBy(self,x):
 
         # change offset 
         self.offset += tickValue(x)
@@ -153,3 +153,6 @@ class OverallState:
         for player in self.players:
             for bullet in player.bulletList:
                 bullet.otime += x 
+    
+    def copy(self):
+        pass

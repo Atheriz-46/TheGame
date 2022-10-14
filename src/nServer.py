@@ -18,7 +18,7 @@ class NetworkServer:
         self.lsock.bind((self.ip, self.port))
         self.regThread = threading.Thread(target=self.register)
         self.regThread.start()
-        self.regThread.join()
+        self.regThread.detach()
 
     def register(self):
 
@@ -28,14 +28,14 @@ class NetworkServer:
             self.parent.sMutex.acquire()
             try:
                 player,playerNumber = self.game.createPlayer()
-                sender_object = Connection(player,conn,address,self.game,playerNumber)
+                sender_object = Connection(self,player,conn,address,self.game,playerNumber)
                 sender_object.start()
             finally:
                 self.parent.sMutex.release()
             
 class Connection(threading.Thread):
 
-    def __init__(self,player, socket,retAddr,game,playerNumber):
+    def __init__(self,parent,player, socket,retAddr,game,playerNumber):
         threading.Thread.__init__(self)
         self.communicator = socket
         self.retAddr = retAddr
@@ -43,9 +43,10 @@ class Connection(threading.Thread):
         self.player = player
         self.game = game
         self.delta = 0
+        self.parent = parent
         
     def run(self):
-        recvThread = threading.Thread(target=self.recieve)
+        recvThread = threading.Thread(target=self.receive)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
         sendThread.start()
@@ -56,7 +57,7 @@ class Connection(threading.Thread):
     def receive(self):
         while True:
             message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
-            newMessage = message.split(" ",2)
+            newMessage = message.split(" ",1)
             currTime = int(newMessage[0])
             if self.delta == 0:
                 self.delta = time.time() - currTime
@@ -66,12 +67,12 @@ class Connection(threading.Thread):
             moveList = json.loads(newMessage[1])
             for i in moveList:
                 i[0] += self.delta
-            self.parent.addMoves(self.playerNumber,moveList)
+            self.parent.parent.addMoves(self.playerNumber,moveList)
 
     def send(self):
         while True:
             time.sleep(STATE_SYNC_LATENCY)
-            cpState = self.parent.getGameCopy()
+            cpState = self.parent.parent.getGameCopy()
             cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber
             self.communicator.send(self.game.getState().encode('utf-8'))

@@ -20,7 +20,7 @@ class PlayerState:
 
     def shoot(self):
         newBullet = Bullet(self.center,[math.cos(self.orientation*0.0174)*BULLET_SPEED,math.sin(self.orientation*0.0174)*BULLET_SPEED], timeFromTick(self.parent.offset))
-        self.bulletLeft.append(newBullet)
+        self.bulletList.append(newBullet)
 
     def turnClock(self):
         self.orientation += SENSTIVITY  

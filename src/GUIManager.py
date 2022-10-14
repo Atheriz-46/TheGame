@@ -22,7 +22,7 @@ class GUIManager(Tk):
             self.graphics.tkraise()
             self.keyboardThread   = Thread(target=self.keyboard)
             self.keyboardThread.start()
-            self.keyboardThread.join()
+            self.keyboardThread.detach()
             self.isStarted = True
         
     def keyboard(self):
@@ -48,7 +48,7 @@ class StartMenu(Frame):
         self.parent = parent
         image1 = Image.open("./test.jpeg")
         test = ImageTk.PhotoImage(image1)
-        label1 = Label(parent=self,image=test)
+        label1 = Label(master=self,image=test)
         label1.image = test
         label1.pack()        
 class EndMenu(Frame):
@@ -57,7 +57,7 @@ class EndMenu(Frame):
         self.parent = parent
         image1 = Image.open("./test.jpeg")
         test = ImageTk.PhotoImage(image1)
-        label1 = Label(parent=self,image=test)
+        label1 = Label(master=self,image=test)
         label1.image = test
         label1.pack()
 
@@ -72,7 +72,7 @@ class Graphics(Frame):
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.drawThread   = Thread(target=self.draw)
         self.drawThread.start()
-        self.drawThread.join()
+        self.drawThread.detach()
     # def update(self): 
         # self.parent.getState()
         
