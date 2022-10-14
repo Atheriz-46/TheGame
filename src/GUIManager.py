@@ -29,10 +29,13 @@ class GUIManager(Tk):
         while True:
             try:
                 if keyboard.is_pressed('q'):
+                    print('Q')
                     self.parent.turnAntiClock()
                 elif keyboard.is_pressed('e'):
+                    print('E')
                     self.parent.turnClock()
                 elif keyboard.is_pressed('p'):
+                    print('P')
                     self.parent.quit()
                     break
             except:
@@ -79,14 +82,15 @@ class Graphics(Frame):
         
     
     def draw(self):
-    
+        
         state = self.parent.parent.getGameCopy()
+        print(state)
         self.canvas.delete("balloon")
         self.canvas.delete("bullet")
         self.canvas.delete("shooter")
         self.draw_balloon(state.balloons)
         self.draw_players(state.players)
-        self.after(15,self.draw)    
+        self.after(1000,self.draw)    
     def draw_balloon(self,balloons):
         for balloon in balloons:
             x,y = balloon.center
@@ -97,7 +101,7 @@ class Graphics(Frame):
             self.draw_player(player,idx)
     def draw_player(self,player,side):
         self.draw_gun(player,side)
-        for bullet in player.bullets:
+        for bullet in player.bulletsList:
             x,y = bullet.getPosition(time())
             r = bullet.width
             self.circle(x,y,r,'blue','bullet')
@@ -112,8 +116,8 @@ class Graphics(Frame):
                                     )
     def draw_gun(self,player,side):
         x,y=player.center
-        orientation = orientation if side==0 else 180-orientation
-        x1,y1 = x+  math.cos(orientation*0.0174)*GUN_LENGTH,y+math.sin(orientation*0.0174)*GUN_LENGTH
+        orientation = player.orientation if side==0 else 180-player.orientation
+        x1,y1 = x+  math.cos(orientation*0.0174)*GUN_SIZE,y+math.sin(orientation*0.0174)*GUN_SIZE
         x,y,x1,y1 = (x*self.scale,y*self.scale,x1*self.scale,y1*self.scale)
         self.canvas.create_line(x,y,x1,y1, fill="black", width=GUN_WIDTH*self.scale,tags='shooter')
     

@@ -21,7 +21,7 @@ class Client:
         self.gui = GUIManager(self)
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
-        
+        self.gameStarted = False
         # self.updateThread.join()
         
     def updateState(self):
@@ -35,7 +35,7 @@ class Client:
                 else:
                     self.state.updateState([],self.eventQueue)
                 if len(self.state.players)>=2:
-                    self.gui.startGame()
+                    self.gameStarted = True
             finally:
                 self.qMutex.release()
                 self.sMutex.release()

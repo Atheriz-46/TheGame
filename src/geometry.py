@@ -13,7 +13,7 @@ class Circle:
         self.speed   = speed
         self.otime   = otime 
 
-    def position(self,currTime):
+    def getPosition(self,currTime):
         timediff = currTime - self.otime 
         
         return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff]
@@ -22,8 +22,8 @@ class Circle:
     def intersects(self,other,currTime):
         if currTime < self.otime or currTime < other.otime: 
             return False
-        otherPos =  other.position(currTime)
-        myPos    =  self.position(currTime)
+        otherPos =  other.getPosition(currTime)
+        myPos    =  self.getPosition(currTime)
         return circleIntersection(*myPos,self.width,*otherPos,other.width)
 
     def getState(self):
