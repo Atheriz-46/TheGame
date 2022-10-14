@@ -128,7 +128,7 @@ class OverallState:
             elif (k == 'balloons'):
                 newBalloons = []
                 for i in v:
-                    newBalloons.append(Balloon(**v))
+                    newBalloons.append(Balloon(**i))
                 setattr(self, k, newBalloons)
             
             elif k=='players':
