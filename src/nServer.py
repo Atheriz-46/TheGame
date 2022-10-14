@@ -67,7 +67,7 @@ class Connection(threading.Thread):
             if self.delta == 0:
                 self.delta = time.time() - currTime
             else : 
-                self.delta = ALPHA*delta + (1 - ALPHA)*(time.time() - currTime)
+                self.delta = ALPHA*self.delta + (1 - ALPHA)*(time.time() - currTime)
             
             moveList = json.loads(newMessage[1])
             for i in moveList:
