@@ -2,8 +2,8 @@ import json
 from tick               import *
 from constants          import *
 from playerState        import PlayerState
-from random             import random,seed
-
+from random             import random,seed,randint
+from balloonState       import Balloon
 class OverallState:
 
     def tickValue(self):
@@ -19,7 +19,7 @@ class OverallState:
     def createPlayer(self):
         
         if len(self.players)+1 > N_PLAYERS:
-            raise Exception(f"Lobby Full. Lobby limit is {N_PLAYERS}")
+            raise Exception(f"Lobby Full. Lobby limit is {N_PLAYERS}.\n Current Players in Lobby : {len(self.players)}")
         
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
@@ -88,9 +88,9 @@ class OverallState:
             
             # Generate Balloons 
             while len(self.balloons) < self.gm.balloonCount:
-                random.seed(self.gm.balloonSeed)
-                x = random.randint(0,655356)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
-                y = random.randint(0,655356)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
+                seed(self.gm.balloonSeed)
+                x = randint(0,655356)%(ARENA_X_BOUNDARY - 2*BALLOON_RADIUS)
+                y = randint(0,655356)%(ARENA_Y_BOUNDARY - 2*BALLOON_RADIUS)
                 newBalloon = Balloon([x,y],timeFromTick(self.offset))
                 self.gm.balloonSeed+=1
                 canBeInserted = True 
@@ -129,7 +129,7 @@ class OverallState:
                     newBalloons.append(Balloon(**v))
                 setattr(self, k, newBalloons)
             
-            else:
+            elif k=='players':
                 newPlayers = []
                 for i in v:
 
@@ -151,7 +151,7 @@ class OverallState:
 
         # update players 
         for player in self.players:
-            for bullet in player.bulletList:
+            for bullet in player.bulletsList:
                 bullet.otime += x 
     
     def copy(self):

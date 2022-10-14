@@ -21,10 +21,14 @@ class NetworkServer:
         # self.regThread.detach()
 
     def register(self):
-
+        i = 0
         while True:
+            
             self.lsock.listen()
+            
             conn, address = self.lsock.accept()
+            i+=1
+            print(f"Connection from {address}, i={i}")
             self.parent.sMutex.acquire()
             try:
                 player,playerNumber = self.game.createPlayer()
@@ -56,9 +60,10 @@ class Connection(threading.Thread):
 
     def receive(self):
         while True:
-            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
+            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
             newMessage = message.split(" ",1)
-            currTime = int(newMessage[0])
+            #TODO: Check if the time is valid
+            currTime = float(newMessage[0])
             if self.delta == 0:
                 self.delta = time.time() - currTime
             else : 
@@ -75,4 +80,4 @@ class Connection(threading.Thread):
             cpState = self.parent.parent.getGameCopy()
             cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber
-            self.communicator.send(self.game.getState().encode('utf-8'))
+            self.communicator.send(json.dumps(self.game.getState()).encode('utf-16'))

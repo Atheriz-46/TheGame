@@ -15,7 +15,9 @@ class Circle:
 
     def position(self,currTime):
         timediff = currTime - self.otime 
-        return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
+        
+        return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff]
+        #TODO: check:  return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
 
     def intersects(self,other,currTime):
         if currTime < self.otime or currTime < other.otime: 

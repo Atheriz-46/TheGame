@@ -9,8 +9,7 @@ class GUIManager(Tk):
     def __init__(self,parent):
         Tk.__init__(self)
         self.parent = parent
-        self.graphics = Graphics(self)
-        self.graphics.grid(row=0, column=0, sticky="nsew")
+
         self.endMenu = EndMenu(self)
         self.endMenu.grid(row=0, column=0, sticky="nsew")
         self.startMenu = StartMenu(self)
@@ -19,6 +18,8 @@ class GUIManager(Tk):
 
     def startGame(self):
         if not self.isStarted:
+            self.graphics = Graphics(self)
+            self.graphics.grid(row=0, column=0, sticky="nsew")
             self.graphics.tkraise()
             self.keyboardThread   = Thread(target=self.keyboard)
             self.keyboardThread.start()
@@ -70,23 +71,23 @@ class Graphics(Frame):
         self.canvas = Canvas(self)
         self.canvas.pack(fill=BOTH, expand=1)
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
-        self.drawThread   = Thread(target=self.draw)
-        self.drawThread.start()
+        self.draw()
+        # self.drawThread   = Thread(target=self.draw)
+        # self.drawThread.start()
         # self.drawThread.detach()
     # def update(self): 
         # self.parent.getState()
         
     
     def draw(self):
-        while True:
-            state = self.parent.parent.getGameCopy()
-            self.canvas.delete("balloon")
-            self.canvas.delete("bullet")
-            self.canvas.delete("shooter")
-            self.draw_balloon(state.balloon)
-            self.draw_players(state.players)
-            time.sleep(0.01)
-        
+    
+        state = self.parent.parent.getGameCopy()
+        self.canvas.delete("balloon")
+        self.canvas.delete("bullet")
+        self.canvas.delete("shooter")
+        self.draw_balloon(state.balloon)
+        self.draw_players(state.players)
+        self.after(0.01,self.draw)    
     def draw_balloon(self,balloons):
         for balloon in balloons:
             x,y = balloon.center

@@ -16,7 +16,7 @@ class NetworkClient:
     
     def recieve(self):
         while True:
-            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode()
+            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
             message = json.loads(message)
             self.parent.setState(message)
     

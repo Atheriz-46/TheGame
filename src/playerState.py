@@ -20,7 +20,7 @@ class PlayerState:
 
     def shoot(self):
         newBullet = Bullet(self.center,[math.cos(self.orientation*0.0174)*BULLET_SPEED,math.sin(self.orientation*0.0174)*BULLET_SPEED], timeFromTick(self.parent.offset))
-        self.bulletList.append(newBullet)
+        self.bulletsList.append(newBullet)
 
     def turnClock(self):
         self.orientation += SENSTIVITY  
@@ -36,7 +36,7 @@ class PlayerState:
     
     def setState(self,state):
         for k,v in state.items():
-            if k=='bulletList':
+            if k=='bulletsList':
                 newBulletList = []
                 for i in v :
                     newBulletList.append(Bullet(**i))
@@ -49,6 +49,6 @@ class PlayerState:
     def copy(self):
         bulletList = [x.copy() for x in self.bulletsList]
         cop = PlayerState(self.parent,self.center.copy())
-        for k,v in zip(['points','orientation','bulletsList'],[self.points.copy(),self.orientation.copy(),bulletList]):
+        for k,v in zip(['points','orientation','bulletsList'],[self.points,self.orientation,bulletList]):
             setattr(cop,k,v)
-        
+        return cop
