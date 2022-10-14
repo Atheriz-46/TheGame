@@ -126,7 +126,13 @@ class OverallState:
             currPlayer.cleanBullets(timeFromTick(self.offset)-4)
         
     def getState(self):
-        return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons], 'offset' : self.offset, 'me': self.me, 'gm' : self.gm.getState()}
+        return {'players':[x.getState() for x in self.players], 
+                'balloons': [x.getState() for x in self.balloons], 
+                'offset' : self.offset, 
+                'me': self.me, 
+                'gm' : self.gm.getState(),
+                'gameEnded' : self.gameEnded
+                }
     
     def setState(self,state):
 
@@ -135,7 +141,7 @@ class OverallState:
                 # Potential Error
                 getattr(self, k).setState(v)
 
-            elif (k in ['offset', 'me']):
+            elif (k in ['offset', 'me','gameEnded']):
                 setattr(self, k, v)
 
             elif (k == 'balloons'):
