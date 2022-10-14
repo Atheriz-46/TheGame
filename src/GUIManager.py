@@ -1,6 +1,6 @@
 import math
 from threading import Thread
-from tkinter import Tk, Canvas, Frame, BOTH,Label
+from tkinter import Tk, Canvas, Frame, BOTH,Label, SUNKEN
 from tick import *
 from constants import *
 # import keyboard
@@ -74,7 +74,9 @@ class EndMenu(Frame):
         label1.image = test
         label1.pack()
 
-
+# class ScoreBoard(Frame):
+#     def __init__(self,parent):
+#         Frame.__init__(self,master = parent,relief=SUNKEN, borderwidth=1)
 
 class Graphics(Frame):
     def __init__(self,parent):
@@ -83,11 +85,8 @@ class Graphics(Frame):
         self.grid_columnconfigure(0, weight=1)
         self.parent = parent
         self.canvas = Canvas(self)
-        # self.canvas.bind("q", lambda event: print("QQQQQ"))
-        # self.canvas.bind("<Button-1>", lambda event: print('OOOOUUUU'))
-        # self.canvas.bind("<Key>", lambda event: print(event,event.char))
-        # self.canvas.bind("p", lambda event: self.master.exit())
         self.canvas.grid(row=0, column=0, sticky="nsew")
+        # self.scoreboard  = ScoreBoard(self)
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.draw()
         
