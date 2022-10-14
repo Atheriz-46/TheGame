@@ -1,4 +1,7 @@
+from ipaddress import ip_interface
 import tkinter as tk
+
+from constants import IP
 
 
 class AskIP(tk.Tk):
@@ -12,10 +15,12 @@ class AskIP(tk.Tk):
         """
         Handles when submit button is pressed in UI
         """
-
-        self.str.Port = self.serverPort.get()
-        self.str.IP = int(self.serverIP.get())
-    
+        ip=self.serverIP.get()
+        if ip: self.str.IP = ip
+        p = self.serverPort.get()
+        if p: self.str.Port = int(p)
+        l = self.Latency.get()
+        if l:self.str.Latency = int(l)
         self.destroy()
 
     def __init__(self, txt):
@@ -27,19 +32,27 @@ class AskIP(tk.Tk):
         )
         self.textServerIP.pack(side="left", fill="both", expand=True)
         self.serverIP = tk.Entry(master=self)
-        self.serverIP.pack(side="right", fill="both", expand=True)
+        self.serverIP.pack(side="left", fill="both", expand=True)
         self.textServerPort = tk.Label(
             master=self, text="Server Port"
         )
         self.textServerPort.pack(side="left", fill="both", expand=True)
         self.serverPort = tk.Entry(master=self)
-        self.serverPort.pack(side="right", fill="both", expand=True)
+        self.serverPort.pack(side="left", fill="both", expand=True)
+        self.textLatency = tk.Label(
+            master=self, text="Latency (ms) (Advanced)"
+        )
+        self.textLatency.pack(side="left", fill="both", expand=True)
+        self.Latency = tk.Entry(master=self)
+        self.Latency.pack(side="left", fill="both", expand=True)
         self.buttonForDirectory = tk.Button(
             master=self, text="Submit", command = self.handleSubmit
         )
-        self.buttonForDirectory.pack(side="bottom")
+        self.buttonForDirectory.pack(side="right", fill="both")
 
 
 class ServerData:
     IP = '127.0.0.1'
     Port = 5000
+    Latency = 0
+    
