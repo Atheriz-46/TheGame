@@ -26,7 +26,7 @@ class Client:
         
     def updateState(self):
         while(True):
-            sleep(STATE_SYNC_LATENCY/2)
+            sleep(STATE_UPDATE_LATENCY/2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:

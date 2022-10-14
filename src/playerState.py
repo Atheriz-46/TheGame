@@ -24,11 +24,9 @@ class PlayerState:
 
     def turnClock(self):
         self.orientation += SENSTIVITY  
-        self.orientation = min(90,self.orientation) 
 
     def turnAntiClock(self):
         self.orientation -= SENSTIVITY
-        self.orientation = max(0,self.orientation) 
 
     def getState(self):
         # @TODO fix this  

@@ -124,8 +124,8 @@ class Graphics(Frame):
                                     )      
     def draw_gun(self,player,side):
         x,y=player.center
-        # orientation = player.orientation
-        orientation = player.orientation if side==0 else 180-player.orientation
+        orientation = player.orientation
+        #orientation = player.orientation if side==0 else 180-player.orientation
         x1,y1 = x+  math.cos(orientation*0.0174)*GUN_SIZE,y+math.sin(orientation*0.0174)*GUN_SIZE
         x,y,x1,y1 = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,x1*self.scale+self.shift_x,y1*self.scale+self.shift_y)
         self.canvas.create_line(x,y,x1,y1, fill="black", width=GUN_WIDTH*self.scale,tags='shooter')
