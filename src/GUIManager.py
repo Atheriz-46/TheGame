@@ -84,7 +84,7 @@ class Graphics(Frame):
         self.canvas.delete("balloon")
         self.canvas.delete("bullet")
         self.canvas.delete("shooter")
-        self.draw_balloon(state.balloon)
+        self.draw_balloon(state.balloons)
         self.draw_players(state.players)
         self.after(0.01,self.draw)    
     def draw_balloon(self,balloons):
