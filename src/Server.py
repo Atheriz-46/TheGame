@@ -20,7 +20,7 @@ class Server:
           
     def updateState(self):
         while(True):
-            sleep(STATE_SYNC_LATENCY/2)
+            sleep(STATE_UPDATE_LATENCY/2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:
@@ -35,7 +35,7 @@ class Server:
         self.qMutex.acquire()
         try:
             for i in mList:
-                self.parent.moveList[playerNumber].append(i)
+                self.moveList[playerNumber].append(i)
         finally:
             self.qMutex.release()
 

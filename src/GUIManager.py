@@ -1,9 +1,9 @@
 import math
 from threading import Thread
-from tkinter import Tk, Canvas, Frame, BOTH,Label
+from tkinter import Tk, Canvas, Frame, BOTH,Label, SUNKEN
 from tick import *
 from constants import *
-import keyboard
+# import keyboard
 from PIL import Image, ImageTk
 class GUIManager(Tk):
     def __init__(self,parent):
@@ -22,27 +22,35 @@ class GUIManager(Tk):
     def startGame(self):
         if not self.isStarted:
             self.graphics.tkraise()
-            self.keyboardThread   = Thread(target=self.keyboard)
-            self.keyboardThread.start()
+            # self.keyboardThread   = Thread(target=self.keyboard)
+            # self.keyboardThread.start()
             self.isStarted = True
-        
+            self.keyboard()
+    def exit(self):
+        # self.parent.quit()
+        print("Game Quitted!!")
+        exit()
     def keyboard(self):
-        while True:
-            try:
-                if keyboard.is_pressed('q'):
-                    print('Q')
-                    self.parent.turnAntiClock()
-                elif keyboard.is_pressed('e'):
-                    print('E')
-                    self.parent.turnClock()
-                elif keyboard.is_pressed('p'):
-                    print('P')
-                    self.parent.quit()
-                    break
-            except:
-                pass
+        print(f"Keyboard is on baby")
+        self.graphics.canvas.bind("<Button-1>", lambda event: self.parent.rotateAntiClock())
+        self.graphics.canvas.bind("<Button-3>", lambda event: self.parent.rotateClock())  
+       
+        # while True:
+        #     try:
+        #         if keyboard.is_pressed('q'):
+        #             print('Q')
+        #             self.parent.turnAntiClock()
+        #         elif keyboard.is_pressed('e'):
+        #             print('E')
+        #             self.parent.turnClock()
+        #         elif keyboard.is_pressed('p'):
+        #             print('P')
+        #             self.parent.quit()
+        #             break
+        #     except:
+        #         pass
         
-        self.endMenu.tkraise()
+        # self.endMenu.tkraise()
     
                 
         
@@ -66,7 +74,9 @@ class EndMenu(Frame):
         label1.image = test
         label1.pack()
 
-
+# class ScoreBoard(Frame):
+#     def __init__(self,parent):
+#         Frame.__init__(self,master = parent,relief=SUNKEN, borderwidth=1)
 
 class Graphics(Frame):
     def __init__(self,parent):
@@ -76,6 +86,7 @@ class Graphics(Frame):
         self.parent = parent
         self.canvas = Canvas(self)
         self.canvas.grid(row=0, column=0, sticky="nsew")
+        # self.scoreboard  = ScoreBoard(self)
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.draw()
         
@@ -83,7 +94,8 @@ class Graphics(Frame):
     
     def draw(self):
         self.master.update()
-        w,h = self.winfo_width(),self.winfo_height()
+        self.time = time()
+        w,h = self.canvas.winfo_width(),self.canvas.winfo_height()
         self.scale = min(w,h)/ARENA_X_BOUNDARY
         if w>h:
             self.shift_x,self.shift_y = (w-h)/2,0
@@ -109,7 +121,7 @@ class Graphics(Frame):
     def draw_player(self,player,side):
         self.draw_gun(player,side)
         for bullet in player.bulletsList:
-            x,y = bullet.getPosition(time())
+            x,y = bullet.getPosition(self.time)
             r = bullet.width
             self.circle(x,y,r,'blue','bullet')
             
@@ -118,13 +130,13 @@ class Graphics(Frame):
         # TODO: Fill the Circle                         
         x,y,r = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,r*self.scale)
         self.canvas.create_oval(x-r,y-r,x+r,y+r,
-                                fill='blue',
-                                tags='bullet',
+                                fill=fill,
+                                tags=tags,
                                     )      
     def draw_gun(self,player,side):
         x,y=player.center
-        # orientation = player.orientation
-        orientation = player.orientation if side==0 else 180-player.orientation
+        orientation = player.orientation
+        #orientation = player.orientation if side==0 else 180-player.orientation
         x1,y1 = x+  math.cos(orientation*0.0174)*GUN_SIZE,y+math.sin(orientation*0.0174)*GUN_SIZE
         x,y,x1,y1 = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,x1*self.scale+self.shift_x,y1*self.scale+self.shift_y)
         self.canvas.create_line(x,y,x1,y1, fill="black", width=GUN_WIDTH*self.scale,tags='shooter')

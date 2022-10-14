@@ -8,11 +8,12 @@ from threading          import Thread, Lock
 from AskIP import AskIP
 class Client:
     
-    def __init__(self,server_ip,server_port):
+    def __init__(self,server_ip,server_port,latencyMode = 0):
         self.eventQueue     = []
         self.qMutex         = Lock()
         self.sMutex         = Lock()
         self.state          = OverallState(GameMode())
+        self.latencyMode    = latencyMode
         # print("Reached here 1")
         # AskIP()
         #TODO Add askIP
@@ -26,7 +27,7 @@ class Client:
         
     def updateState(self):
         while(True):
-            sleep(STATE_SYNC_LATENCY/2)
+            sleep(STATE_UPDATE_LATENCY/2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:
@@ -57,9 +58,9 @@ class Client:
     def getState(self):
         self.qMutex.acquire()
         try:
-            ret = [x.getState() for x in self.eventQueue]
+            ret = self.eventQueue.copy()
             self.eventQueue = []
-        finally:
+        finally:    
             self.qMutex.release()
             return ret 
 
