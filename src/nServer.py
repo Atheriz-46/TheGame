@@ -2,7 +2,8 @@ import socket
 import threading
 import re
 import argparse
-import time
+import time as T
+from tick import *
 import sys
 from constants import *
 from overallState import OverallState
@@ -65,10 +66,10 @@ class Connection(threading.Thread):
             #TODO: Check if the time is valid
             currTime = float(newMessage[0])
             if self.delta == 0:
-                self.delta = time.time() - currTime
+                self.delta = time() - currTime
             else : 
-                self.delta = ALPHA*self.delta + (1 - ALPHA)*(time.time() - currTime)
-            
+                self.delta = ALPHA*self.delta + (1 - ALPHA)*(time() - currTime)
+
             moveList = json.loads(newMessage[1])
             for i in moveList:
                 i[0] += self.delta
@@ -76,7 +77,7 @@ class Connection(threading.Thread):
 
     def send(self):
         while True:
-            time.sleep(STATE_SYNC_LATENCY)
+            T.sleep(STATE_SYNC_LATENCY)
             cpState = self.parent.parent.getGameCopy()
             cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber

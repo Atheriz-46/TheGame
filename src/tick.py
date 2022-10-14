@@ -8,7 +8,7 @@ def currTicks():
     return tickValue(time())
 
 def timeFromTick(x):
-    return x*TICK_RATE
+    return round(x*TICK_RATE/1000,5)
 
 def time():
-    return T.time()
+    return round(T.time(),5)

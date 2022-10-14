@@ -11,11 +11,13 @@ class Circle:
         self.center  = center
         self.width   = width
         self.speed   = speed
+        for i in self.speed:
+            i = round(i,2)
         self.otime   = otime 
 
     def getPosition(self,currTime):
         timediff = currTime - self.otime 
-        
+        # print(self.center,self.speed,timediff)
         return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff]
         #TODO: check:  return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
 
