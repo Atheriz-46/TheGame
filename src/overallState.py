@@ -51,7 +51,7 @@ class OverallState:
             next = self.offset + 1
 
             while leftIterator!=len(leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0])<=next:
-                if leftPlayerInputs[leftIterator][1] == 'C':
+                if leftPlayerInputs[leftIterator][1] == 'A':
                     self.players[0].turnClock()
                 else: 
                     self.players[0].turnAntiClock()
