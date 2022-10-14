@@ -15,7 +15,9 @@ class OverallState:
         self.gm = gameMode
         self.offset = currTicks()
         self.me     = 0
-    
+        # TODO add to gameEnded setattr getattr and copy 
+        self.gameEnded = False 
+
     def createPlayer(self):
         
         if len(self.players)+1 > N_PLAYERS:
@@ -33,8 +35,13 @@ class OverallState:
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
         if len(self.players) < 2:
+            self.startTime = time()
             return 
         
+        if(timeFromTick(self.offset)>=self.startTime+120):
+            self.gameEnded = True 
+            return 
+
         leftIterator  = 0
         rightIterator = 0
 
