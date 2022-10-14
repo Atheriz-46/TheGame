@@ -1,7 +1,5 @@
-from ipaddress import ip_interface
 import tkinter as tk
-
-from constants import IP
+import constants
 
 
 class AskIP(tk.Tk):
@@ -52,7 +50,7 @@ class AskIP(tk.Tk):
 
 
 class ServerData:
-    IP = '127.0.0.1'
-    Port = 5000
+    IP = constants.IP
+    Port = constants.port
     Latency = 0
     

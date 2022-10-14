@@ -14,10 +14,6 @@ class Client:
         self.sMutex         = Lock()
         self.state          = OverallState(GameMode())
         self.latencyMode    = latencyMode
-        # print("Reached here 1")
-        # AskIP()
-        #TODO Add askIP
-        # print("Reached here 2")
         self.networkManager = NetworkClient(server_ip,server_port,self)
         self.gui = GUIManager(self)
         self.updateThread   = Thread(target=self.updateState)
