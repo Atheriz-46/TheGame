@@ -155,4 +155,12 @@ class OverallState:
                 bullet.otime += x 
     
     def copy(self):
-        pass
+        players = [x.copy() for x in self.players]
+        balloons = [x.copy() for x in self.balloons]
+        
+        gm = self.gameMode.copy()
+        cop = OverallState(gm)
+        for k,v in zip(['players','balloons','offset','me'],[players,balloons,self.offset,self.me]):
+            setattr(cop,k,v)
+        return cop
+        

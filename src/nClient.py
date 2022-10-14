@@ -27,8 +27,8 @@ class NetworkClient:
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
         sendThread.start()
-        recvThread.detach()
-        sendThread.detach()
+        # recvThread.detach()
+        # sendThread.detach()
 
     def __init__(self,server_ip,server_port,parent):
         self.server_ip = server_ip

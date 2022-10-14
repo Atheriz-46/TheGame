@@ -22,7 +22,7 @@ class GUIManager(Tk):
             self.graphics.tkraise()
             self.keyboardThread   = Thread(target=self.keyboard)
             self.keyboardThread.start()
-            self.keyboardThread.detach()
+            # self.keyboardThread.detach()
             self.isStarted = True
         
     def keyboard(self):
@@ -72,7 +72,7 @@ class Graphics(Frame):
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.drawThread   = Thread(target=self.draw)
         self.drawThread.start()
-        self.drawThread.detach()
+        # self.drawThread.detach()
     # def update(self): 
         # self.parent.getState()
         

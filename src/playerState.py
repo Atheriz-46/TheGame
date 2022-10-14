@@ -46,4 +46,7 @@ class PlayerState:
             else:
                 setattr(self,k,v)
                 
+    def copy(self):
+        bulletList = [x.copy() for x in self.bulletList]
+        return PlayerState(self.parent,**self.getState(),bulletList=bulletList)
         

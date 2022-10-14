@@ -11,4 +11,7 @@ class GameMode:
 	def setState(self, state):
 
 		for k,v in state.items():
-			setattr(self,k,v)		
+			setattr(self,k,v)	
+   
+	def copy(self):
+		return GameMode(**self.getState())

@@ -18,7 +18,7 @@ class NetworkServer:
         self.lsock.bind((self.ip, self.port))
         self.regThread = threading.Thread(target=self.register)
         self.regThread.start()
-        self.regThread.detach()
+        # self.regThread.detach()
 
     def register(self):
 
