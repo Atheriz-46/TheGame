@@ -8,12 +8,12 @@ class Server:
     def __init__(self,ip = '127.0.0.1',port = 65432,**kwargs):
         self.gm = GameMode(**kwargs)
         self.game = OverallState(self.gm)
-        self.network = NetworkServer(parent = self,game = self.game,ip = ip, port = port)
         self.moveList = [] 
         self.moveList.append([])
         self.moveList.append([])
         self.qMutex         = Lock()
         self.sMutex         = Lock()
+        self.network = NetworkServer(parent = self,game = self.game,ip = ip, port = port)
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
         self.updateThread.join()

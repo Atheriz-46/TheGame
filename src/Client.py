@@ -15,7 +15,7 @@ class Client:
         self.state          = OverallState(GameMode())
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
-        self.updateState.join()
+        self.updateThread.join()
         self.gui = GUIManager(self)
         
     def updateState(self):
@@ -60,7 +60,7 @@ class Client:
     def setState(self,state):
         self.sMutex.acquire()
         try:
-            self.OverallState.setState(state)   
+            self.state.setState(state)   
         finally:
             self.sMutex.release()
     def getGameCopy(self):
