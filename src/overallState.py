@@ -24,11 +24,11 @@ class OverallState:
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
             self.players.append(player)
-            return [player,0]
+            return player,0
         else:
             player = PlayerState(self,RIGHT_CENTER)
             self.players.append(player)
-            return [player,1]
+            return player,1
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
         if len(self.players) < 2:
