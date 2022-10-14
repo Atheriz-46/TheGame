@@ -86,7 +86,7 @@ class Graphics(Frame):
         self.canvas.delete("shooter")
         self.draw_balloon(state.balloons)
         self.draw_players(state.players)
-        self.after(0.01,self.draw)    
+        self.after(15,self.draw)    
     def draw_balloon(self,balloons):
         for balloon in balloons:
             x,y = balloon.center
@@ -96,7 +96,7 @@ class Graphics(Frame):
         for idx,player in enumerate(players):
             self.draw_player(player,idx)
     def draw_player(self,player,side):
-        self.raw_gun(player,side)
+        self.draw_gun(player,side)
         for bullet in player.bullets:
             x,y = bullet.getPosition(time())
             r = bullet.width
