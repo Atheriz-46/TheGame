@@ -7,7 +7,7 @@ import sys
 from constants import *
 from overallState import OverallState
 from playerState import PlayerState
-
+import json
 class NetworkServer:
     def __init__(self,parent,ip = '127.0.0.1',port = 65432,game=None):
         self.game = game
@@ -16,7 +16,7 @@ class NetworkServer:
         self.ip, self.port = ip,port
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind((self.ip, self.port))
-        self.regThread = Thread(target=self.register)
+        self.regThread = threading.Thread(target=self.register)
         self.regThread.start()
         self.regThread.join()
 
