@@ -27,13 +27,14 @@ class GUIManager(Tk):
             self.isStarted = True
             self.keyboard()
     def exit(self):
-        self.parent.quit()
+        # self.parent.quit()
+        print("Game Quitted!!")
         exit()
     def keyboard(self):
         print(f"Keyboard is on baby")
-        self.graphics.canvas.bind("<q>", lambda event: self.parent.turnAntiClock())
-        self.graphics.canvas.bind("<e>", lambda event: self.parent.turnClock())
-        self.graphics.canvas.bind("<p>", self.exit())
+        self.graphics.canvas.bind("<Button-1>", lambda event: self.parent.rotateAntiClock())
+        self.graphics.canvas.bind("<Button-3>", lambda event: self.parent.rotateClock())  
+       
         # while True:
         #     try:
         #         if keyboard.is_pressed('q'):
@@ -49,7 +50,7 @@ class GUIManager(Tk):
         #     except:
         #         pass
         
-        self.endMenu.tkraise()
+        # self.endMenu.tkraise()
     
                 
         
@@ -82,6 +83,10 @@ class Graphics(Frame):
         self.grid_columnconfigure(0, weight=1)
         self.parent = parent
         self.canvas = Canvas(self)
+        # self.canvas.bind("q", lambda event: print("QQQQQ"))
+        # self.canvas.bind("<Button-1>", lambda event: print('OOOOUUUU'))
+        # self.canvas.bind("<Key>", lambda event: print(event,event.char))
+        # self.canvas.bind("p", lambda event: self.master.exit())
         self.canvas.grid(row=0, column=0, sticky="nsew")
         self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
         self.draw()

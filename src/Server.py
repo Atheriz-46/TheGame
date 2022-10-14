@@ -35,7 +35,7 @@ class Server:
         self.qMutex.acquire()
         try:
             for i in mList:
-                self.parent.moveList[playerNumber].append(i)
+                self.moveList[playerNumber].append(i)
         finally:
             self.qMutex.release()
 

@@ -34,7 +34,5 @@ GUN_SIZE = 7
 GUN_WIDTH = 4
 N_PLAYERS = 2
 IP = '127.0.0.1'
-# import random
-port = 6716
-# random.randint(10000,65535)
+port = 17171  
 print(f"Port number is {port}")
