@@ -21,7 +21,8 @@ class Client:
         self.gui = GUIManager(self)
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
-        self.updateThread.join()
+        
+        # self.updateThread.join()
         
     def updateState(self):
         while(True):
