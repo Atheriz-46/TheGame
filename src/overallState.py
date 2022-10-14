@@ -28,6 +28,7 @@ class OverallState:
         else:
             player = PlayerState(self,RIGHT_CENTER)
             self.players.append(player)
+            player.orientation = 135
             return player,1
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
@@ -46,10 +47,7 @@ class OverallState:
             
 
         #Process Inputs that occured after current state
-        changed = 0
-        while leftIterator!=len(leftPlayerInputs) or rightIterator!=len(rightPlayerInputs) or changed<2:
-
-            changed += 1 
+        while leftIterator!=len(leftPlayerInputs) or rightIterator!=len(rightPlayerInputs) or self.tickValue() > 6:
             next = self.offset + 1
 
             while leftIterator!=len(leftPlayerInputs) and tickValue(leftPlayerInputs[leftIterator][0])<=next:
@@ -57,6 +55,10 @@ class OverallState:
                     self.players[0].turnClock()
                 else: 
                     self.players[0].turnAntiClock()
+                if self.players[0].orientation < 0:
+                    self.players[0].orientation = 0
+                if self.players[0].orientation > 90:
+                    self.players[0].orientation = 90
                 leftIterator+=1
             
             while rightIterator!=len(rightPlayerInputs) and tickValue(rightPlayerInputs[rightIterator][0])<=next:
@@ -64,6 +66,10 @@ class OverallState:
                     self.players[1].turnClock()
                 else: 
                     self.players[1].turnAntiClock()
+                if self.players[1].orientation < 90:
+                    self.players[1].orientation = 90
+                if self.players[1].orientation > 180:
+                    self.players[1].orientation = 180
                 rightIterator+=1 
 
             self.offset = next
@@ -98,7 +104,7 @@ class OverallState:
                 canBeInserted = True 
                 
                 for ballon in self.balloons:
-                    if ballon.intersects(newBalloon,0):
+                    if ballon.intersects(newBalloon,time()):
                         canBeInserted = False
 
                 for currPlayer in self.players:
@@ -110,7 +116,7 @@ class OverallState:
                     self.balloons.append(newBalloon)
         
         for currPlayer in self.players:
-            currPlayer.cleanBullets(timeFromTick(self.offset)-10)
+            currPlayer.cleanBullets(timeFromTick(self.offset)-4)
         
     def getState(self):
         return {'players':[x.getState() for x in self.players], 'balloons': [x.getState() for x in self.balloons], 'offset' : self.offset, 'me': self.me, 'gm' : self.gm.getState()}

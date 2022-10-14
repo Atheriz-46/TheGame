@@ -2,7 +2,8 @@ import socket
 import threading
 import re
 import argparse
-import time
+import time as T
+from tick import *
 import sys
 from constants import * 
 import json
@@ -11,8 +12,8 @@ class NetworkClient:
     
     def send(self):
         while True:
-            time.sleep(STATE_SYNC_LATENCY)
-            self.communicator.send((str(time.time())+" "+json.dumps(self.parent.getState())).encode('utf-16'))
+            T.sleep(STATE_SYNC_LATENCY)
+            self.communicator.send((str(time())+" "+json.dumps(self.parent.getState())).encode('utf-16'))
     
     def recieve(self):
         while True:

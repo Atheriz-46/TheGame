@@ -90,6 +90,7 @@ class Graphics(Frame):
     
     def draw(self):
         self.master.update()
+        self.time = time()
         w,h = self.canvas.winfo_width(),self.canvas.winfo_height()
         self.scale = min(w,h)/ARENA_X_BOUNDARY
         if w>h:
@@ -116,7 +117,7 @@ class Graphics(Frame):
     def draw_player(self,player,side):
         self.draw_gun(player,side)
         for bullet in player.bulletsList:
-            x,y = bullet.getPosition(time())
+            x,y = bullet.getPosition(self.time)
             r = bullet.width
             self.circle(x,y,r,'blue','bullet')
             
@@ -125,13 +126,13 @@ class Graphics(Frame):
         # TODO: Fill the Circle                         
         x,y,r = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,r*self.scale)
         self.canvas.create_oval(x-r,y-r,x+r,y+r,
-                                fill='blue',
-                                tags='bullet',
+                                fill=fill,
+                                tags=tags,
                                     )      
     def draw_gun(self,player,side):
         x,y=player.center
-        # orientation = player.orientation
-        orientation = player.orientation if side==0 else 180-player.orientation
+        orientation = player.orientation
+        #orientation = player.orientation if side==0 else 180-player.orientation
         x1,y1 = x+  math.cos(orientation*0.0174)*GUN_SIZE,y+math.sin(orientation*0.0174)*GUN_SIZE
         x,y,x1,y1 = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,x1*self.scale+self.shift_x,y1*self.scale+self.shift_y)
         self.canvas.create_line(x,y,x1,y1, fill="black", width=GUN_WIDTH*self.scale,tags='shooter')
