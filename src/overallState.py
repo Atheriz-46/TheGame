@@ -19,7 +19,7 @@ class OverallState:
     def createPlayer(self):
         
         if len(self.players)+1 > N_PLAYERS:
-            raise Exception(f"Lobby Full. Lobby limit is {self.gm.nplayers}")
+            raise Exception(f"Lobby Full. Lobby limit is {N_PLAYERS}")
         
         if len(self.players) == 0:
             player = PlayerState(self,LEFT_CENTER)
@@ -158,7 +158,7 @@ class OverallState:
         players = [x.copy() for x in self.players]
         balloons = [x.copy() for x in self.balloons]
         
-        gm = self.gameMode.copy()
+        gm = self.gm.copy()
         cop = OverallState(gm)
         for k,v in zip(['players','balloons','offset','me'],[players,balloons,self.offset,self.me]):
             setattr(cop,k,v)

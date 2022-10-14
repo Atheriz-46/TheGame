@@ -47,6 +47,8 @@ class PlayerState:
                 setattr(self,k,v)
                 
     def copy(self):
-        bulletList = [x.copy() for x in self.bulletList]
-        return PlayerState(self.parent,**self.getState(),bulletList=bulletList)
+        bulletList = [x.copy() for x in self.bulletsList]
+        cop = PlayerState(self.parent,self.center.copy())
+        for k,v in zip(['points','orientation','bulletsList'],[self.points.copy(),self.orientation.copy(),bulletList]):
+            setattr(cop,k,v)
         
