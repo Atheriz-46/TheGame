@@ -46,7 +46,7 @@ class OverallState:
             
 
         #Process Inputs that occured after current state
-        while leftIterator!=len(leftPlayerInputs) and rightIterator!=len(rightPlayerInputs): 
+        while leftIterator!=len(leftPlayerInputs) or rightIterator!=len(rightPlayerInputs) or self.offset<=currTicks()-60: 
             
             next = self.offset + 1
 
