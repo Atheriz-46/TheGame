@@ -5,10 +5,10 @@ from threading      import Thread, Lock
 from tick           import *
 from time           import sleep
 class Server:
-    def __init__(self,**kwargs):
+    def __init__(self,ip = '127.0.0.1',port = 65432,**kwargs):
         self.gm = GameMode(**kwargs)
         self.game = OverallState(self.gm)
-        self.network = NetworkServer(parent = self,game = self.game)
+        self.network = NetworkServer(parent = self,game = self.game,ip = ip, port = port)
         self.moveList = [] 
         self.moveList.append([])
         self.moveList.append([])
