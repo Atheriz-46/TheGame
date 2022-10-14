@@ -7,17 +7,29 @@ from time           import sleep
 class Server:
     def __init__(self,ip = '127.0.0.1',port = 65432,**kwargs):
         self.gm = GameMode(**kwargs)
+        self.leftGame = 0
         self.game = OverallState(self.gm)
         self.moveList = [] 
         self.moveList.append([])
         self.moveList.append([])
         self.qMutex         = Lock()
         self.sMutex         = Lock()
+        self.lMutex         = Lock()
         self.network = NetworkServer(parent = self,game = self.game,ip = ip, port = port)
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
         self.updateThread.join()
-          
+        
+    def vacate(self):
+        self.lMutex.acquire()
+        try:
+            self.leftGame+=1
+            if self.leftGame==2:
+                self.leftGame = 0
+                self.flush()
+        finally:
+            lMutex.release()
+        
     def updateState(self):
         while(True):
             sleep(STATE_UPDATE_LATENCY/2)
@@ -38,6 +50,17 @@ class Server:
                 self.moveList[playerNumber].append(i)
         finally:
             self.qMutex.release()
+
+    def flush(self):
+        self.sMutex.acquire()
+        self.qMutex.acquire()
+        try:
+            self.game = OverallState(self.gm)
+            moveList[0] = []
+            moveList[1] = []
+        finally:
+            self.qMutex.release()
+            self.sMutex.release()
 
     def getGameCopy(self):
         self.sMutex.acquire()

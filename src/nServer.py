@@ -43,6 +43,7 @@ class Connection(threading.Thread):
     def __init__(self,parent,player, socket,retAddr,game,playerNumber):
         threading.Thread.__init__(self)
         self.communicator = socket
+        self.active   = True 
         self.retAddr = retAddr
         self.playerNumber = playerNumber 
         self.player = player
@@ -57,11 +58,19 @@ class Connection(threading.Thread):
         sendThread.start()
         recvThread.join()
         sendThread.join()
-
+        self.parent.vacate()
+        try:
+            self.communicator.close()
+        finally:
+            return
 
     def receive(self):
-        while True:
-            message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+        while self.active:
+            try:
+                message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+            except:
+                self.active = False
+                break
             newMessage = message.split(" ",1)
             #TODO: Check if the time is valid
             currTime = float(newMessage[0])
@@ -76,9 +85,15 @@ class Connection(threading.Thread):
             self.parent.parent.addMoves(self.playerNumber,moveList)
 
     def send(self):
-        while True:
+        while self.active:
             T.sleep(STATE_SYNC_LATENCY)
             cpState = self.parent.parent.getGameCopy()
             cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber
-            self.communicator.send(json.dumps(self.game.getState()).encode('utf-16'))
+            try:
+                self.communicator.send(json.dumps(self.game.getState()).encode('utf-16'))
+            except:
+                self.active = False
+                break
+            if cpState.gameEnded:
+                self.active = False
