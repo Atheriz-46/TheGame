@@ -22,7 +22,6 @@ class GUIManager(Tk):
             self.graphics.tkraise()
             self.keyboardThread   = Thread(target=self.keyboard)
             self.keyboardThread.start()
-            # self.keyboardThread.detach()
             self.isStarted = True
         
     def keyboard(self):
@@ -72,7 +71,7 @@ class Graphics(Frame):
         self.parent = parent
         self.canvas = Canvas(self)
         self.canvas.pack(fill=BOTH, expand=1)
-        self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY
+        self.scale = min(self.canvas.winfo_width(),self.canvas.winfo_height())/ARENA_X_BOUNDARY*100
         self.draw()
         # self.drawThread   = Thread(target=self.draw)
         # self.drawThread.start()
@@ -82,15 +81,15 @@ class Graphics(Frame):
         
     
     def draw(self):
-        
+
         state = self.parent.parent.getGameCopy()
-        print(state)
         self.canvas.delete("balloon")
         self.canvas.delete("bullet")
         self.canvas.delete("shooter")
         self.draw_balloon(state.balloons)
         self.draw_players(state.players)
-        self.after(1000,self.draw)    
+        self.canvas.update()
+        self.master.after(10,self.draw)    
     def draw_balloon(self,balloons):
         for balloon in balloons:
             x,y = balloon.center
@@ -113,7 +112,7 @@ class Graphics(Frame):
         self.canvas.create_oval(x-r,y-r,x+r,y+r,
                                 fill='blue',
                                 tags='bullet',
-                                    )
+                                    )      
     def draw_gun(self,player,side):
         x,y=player.center
         orientation = player.orientation if side==0 else 180-player.orientation

@@ -9,5 +9,6 @@ cl = Client(IP,port)
 while True:
     if cl.gameStarted:
         cl.gui.startGame()
-    cl.gui.update_idletasks()
-    cl.gui.update()
+        break
+
+cl.gui.mainloop()
