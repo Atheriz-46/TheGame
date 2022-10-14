@@ -1,3 +1,7 @@
 from Client import Client
+from constants import IP,port
 
-Client('127.0.0.1',65432)
+print("Client started")
+from time import sleep
+sleep(2)
+Client(IP,port)
