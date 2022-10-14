@@ -1,26 +1,26 @@
 from GUIManager import GUIManager
+from time import sleep
 from tick               import *
 from nClient            import NetworkClient
 from overallState       import OverallState
 from gameMode           import GameMode
 from threading          import Thread, Lock
-
 class Client:
     
     def __init__(self,server_ip,server_port):
         self.eventQueue     = []
         self.qMutex         = Lock()
         self.sMutex         = Lock()
-        self.networkManager = NetworkClient(server_ip,server_port,self)
         self.state          = OverallState(GameMode())
         self.updateThread   = Thread(target=self.updateState)
         self.updateThread.start()
         self.updateThread.join()
+        self.networkManager = NetworkClient(server_ip,server_port,self)
         self.gui = GUIManager(self)
         
     def updateState(self):
         while(True):
-            time.sleep(STATE_SYNC_LATENCY/2)
+            sleep(STATE_SYNC_LATENCY/2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:

@@ -31,7 +31,7 @@ class NetworkServer:
                 sender_object = Connection(player,conn,address,self.game,playerNumber)
                 sender_object.start()
             finally:
-                self.sMutex.release()
+                self.parent.sMutex.release()
             
 class Connection(threading.Thread):
 

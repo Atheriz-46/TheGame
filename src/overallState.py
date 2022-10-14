@@ -18,7 +18,7 @@ class OverallState:
     
     def createPlayer(self):
         
-        if len(self.players)+1 > self.gm.nplayers:
+        if len(self.players)+1 > N_PLAYERS:
             raise Exception(f"Lobby Full. Lobby limit is {self.gm.nplayers}")
         
         if len(self.players) == 0:

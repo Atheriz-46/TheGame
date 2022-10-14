@@ -46,7 +46,7 @@ class StartMenu(Frame):
     def __init__(self,parent):
         Frame.__init__(self, parent)
         self.parent = parent
-        image1 = Image.open("../test.jpeg")
+        image1 = Image.open("./test.jpeg")
         test = ImageTk.PhotoImage(image1)
         label1 = Label(parent=self,image=test)
         label1.image = test
@@ -55,7 +55,7 @@ class EndMenu(Frame):
     def __init__(self,parent):
         Frame.__init__(self, parent)
         self.parent = parent
-        image1 = Image.open("../test.jpeg")
+        image1 = Image.open("./test.jpeg")
         test = ImageTk.PhotoImage(image1)
         label1 = Label(parent=self,image=test)
         label1.image = test
@@ -79,7 +79,7 @@ class Graphics(Frame):
     
     def draw(self):
         while True:
-            state = self.parent.parent.getGameState()
+            state = self.parent.parent.getGameCopy()
             self.canvas.delete("balloon")
             self.canvas.delete("bullet")
             self.canvas.delete("shooter")
