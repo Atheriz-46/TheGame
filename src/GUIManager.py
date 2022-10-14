@@ -3,7 +3,7 @@ from threading import Thread
 from tkinter import Tk, Canvas, Frame, BOTH,Label
 from tick import *
 from constants import *
-import keyboard
+# import keyboard
 from PIL import Image, ImageTk
 class GUIManager(Tk):
     def __init__(self,parent):
@@ -22,25 +22,32 @@ class GUIManager(Tk):
     def startGame(self):
         if not self.isStarted:
             self.graphics.tkraise()
-            self.keyboardThread   = Thread(target=self.keyboard)
-            self.keyboardThread.start()
+            # self.keyboardThread   = Thread(target=self.keyboard)
+            # self.keyboardThread.start()
             self.isStarted = True
-        
+            self.keyboard()
+    def exit(self):
+        self.parent.quit()
+        exit()
     def keyboard(self):
-        while True:
-            try:
-                if keyboard.is_pressed('q'):
-                    print('Q')
-                    self.parent.turnAntiClock()
-                elif keyboard.is_pressed('e'):
-                    print('E')
-                    self.parent.turnClock()
-                elif keyboard.is_pressed('p'):
-                    print('P')
-                    self.parent.quit()
-                    break
-            except:
-                pass
+        print(f"Keyboard is on baby")
+        self.graphics.canvas.bind("<q>", lambda event: self.parent.turnAntiClock())
+        self.graphics.canvas.bind("<e>", lambda event: self.parent.turnClock())
+        self.graphics.canvas.bind("<p>", self.exit())
+        # while True:
+        #     try:
+        #         if keyboard.is_pressed('q'):
+        #             print('Q')
+        #             self.parent.turnAntiClock()
+        #         elif keyboard.is_pressed('e'):
+        #             print('E')
+        #             self.parent.turnClock()
+        #         elif keyboard.is_pressed('p'):
+        #             print('P')
+        #             self.parent.quit()
+        #             break
+        #     except:
+        #         pass
         
         self.endMenu.tkraise()
     
@@ -84,7 +91,7 @@ class Graphics(Frame):
     def draw(self):
         self.master.update()
         self.time = time()
-        w,h = self.winfo_width(),self.winfo_height()
+        w,h = self.canvas.winfo_width(),self.canvas.winfo_height()
         self.scale = min(w,h)/ARENA_X_BOUNDARY
         if w>h:
             self.shift_x,self.shift_y = (w-h)/2,0
