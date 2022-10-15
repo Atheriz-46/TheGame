@@ -28,7 +28,7 @@ class NetworkClient:
                 )
             except:
                 self.active = False
-                self.parent.gui.endMenu.tkraise()
+                self.parent.gui.endMenu.fix()
 
     def recieve(self):
         """
@@ -39,7 +39,7 @@ class NetworkClient:
                 message = recieveMessage(self.communicator)
             except:
                 self.active = False
-                self.parent.gui.endMenu.tkraise()
+                self.parent.gui.endMenu.fix()
                 break
             if self.parent.latencyMode:
                 T.sleep(self.parent.latencyMode)
@@ -49,7 +49,7 @@ class NetworkClient:
             cp = self.parent.getGameCopy()
             if cp.gameEnded:
                 self.active = False
-                self.parent.gui.endMenu.tkraise()
+                self.parent.gui.endMenu.fix()
 
     def register(self):
         """
