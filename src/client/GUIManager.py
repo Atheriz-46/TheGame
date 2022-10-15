@@ -47,7 +47,7 @@ class GUIManager(Tk):
     def keyboard(self):
         """Binds the keyboard control to functions
         """
-        print(f"Keyboard is on baby")
+        # print(f"Keyboard is on baby")
         self.graphics.canvas.bind("<Button-1>", lambda event: self.parent.rotateAntiClock())
         self.graphics.canvas.bind("<Button-3>", lambda event: self.parent.rotateClock())  
     
