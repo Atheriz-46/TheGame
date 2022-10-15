@@ -2,6 +2,7 @@ from .constants import FIXED_SIZE
 from time import sleep
 from threading import Thread,Lock
 class messenger:
+    """Handles the message sending and recieving over a socket"""
     def __init__(self,conn):
         self.buffer = []
         self.messageBuffer = []
@@ -54,6 +55,8 @@ class messenger:
                 sleep(0.01)
             
     def reader(self):
+        """Used to read the messages and store them in a buffer"""
+
         while True:
             curr = self.conn.recv(FIXED_SIZE).decode("utf-8") 
             print(curr)
