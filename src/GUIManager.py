@@ -77,7 +77,15 @@ class EndMenu(Frame):
         label1.pack()
 
 class ScoreBoard(Frame):
+    """
+    Creates Frame to display player points
+    """
     def __init__(self,parent):
+
+        """
+        Args:
+                parent (GUIManager) : Reference to GUIManager master window into which ScoreBoard is packed
+        """
 
         Frame.__init__(self,master = parent,relief=SUNKEN, borderwidth=1)
         self.parent = parent
@@ -93,6 +101,9 @@ class ScoreBoard(Frame):
         self.grid(row = 1, column = 0)
 
     def updatePoints(self):
+        """
+        Updates player scores to be displayed on the frame labels
+        """
         self.lbl_leftScore.config(text = self.parent.parent.state.players[0].points)
         self.lbl_rightScore.config(text = self.parent.parent.state.players[1].points)
 
