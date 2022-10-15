@@ -1,6 +1,4 @@
-FIXED_SIZE = 1024
-
-
+from .constants import FIXED_SIZE
 def sendMessage(conn, s):
     """
     Used to send message s using Socket conn.
@@ -18,6 +16,7 @@ def sendMessage(conn, s):
         p += i
         if len(p.encode("utf-16")) >= FIXED_SIZE:
             conn.send(p.encode("utf-16"))
+            print(p.encode("utf-16"))
             p = ""
     if len(p) == 0:
         pass
@@ -25,6 +24,7 @@ def sendMessage(conn, s):
         while len(p.encode("utf-16")) < FIXED_SIZE:
             p += "*"
         conn.send(p.encode("utf-16"))
+        print(p.encode("utf-16"))
 
 
 def recieveMessage(conn):
@@ -40,4 +40,5 @@ def recieveMessage(conn):
         s += curr
         if "%" in s:
             break
+    print(s)
     return s.split("%")[0]
