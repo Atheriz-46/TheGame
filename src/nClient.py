@@ -10,8 +10,13 @@ from networkLibrary import *
 import json
 
 class NetworkClient:
-    
+    """
+    Handles networking for the game client
+    """
     def send(self):
+        """
+        Threading function for perodically sending server data about user activity
+        """
         while self.active:
             T.sleep(max(STATE_SYNC_LATENCY,self.parent.latencyMode))
             try:
@@ -21,6 +26,9 @@ class NetworkClient:
                 self.parent.gui.endMenu.tkraise()
 
     def recieve(self):
+        """
+        Threading function for perodically recieving game states from server
+        """
         while self.active:
             try:
                 message = recieveMessage(self.communicator)
@@ -39,6 +47,9 @@ class NetworkClient:
                 self.parent.gui.endMenu.tkraise()
 
     def register(self):
+        """
+        Helper function to register the client with the server and initialize threads
+        """
         self.communicator   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.communicator.connect((self.server_ip,self.server_port)) 
         recvThread = threading.Thread(target=self.recieve)
@@ -47,6 +58,13 @@ class NetworkClient:
         sendThread.start()
 
     def __init__(self,server_ip,server_port,parent):
+        """
+        Initializer for Network client
+        Args:
+            server_ip (String) : IP address of server to connect to
+            server_port (int) :  port of the server to connect to
+            parent (Client): Client object to which this nClient object belongs to
+        """
         self.server_ip = server_ip
         self.server_port = server_port
         self.parent = parent
