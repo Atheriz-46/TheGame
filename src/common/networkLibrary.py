@@ -44,8 +44,8 @@ class messenger:
         while True:
             self.rlock.acquire()
             if len(self.messageBuffer):
-                print(p)
                 p = self.messageBuffer[0]
+                print(p)
                 self.messageBuffer.pop(0)
                 self.rlock.release()
                 return p 
@@ -65,3 +65,4 @@ class messenger:
                     self.rlock.release()
                 else:
                     self.buffer.append(i)
+                    sleep(0.01)
