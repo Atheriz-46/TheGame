@@ -1,6 +1,7 @@
-from constants import * 
+from constants import *
 
-def distance(x1,y1,x2,y2):
+
+def distance(x1, y1, x2, y2):
 
     """
     Used to find the distance between 2 points ((x1,y1), (x2,y2))
@@ -12,11 +13,10 @@ def distance(x1,y1,x2,y2):
             y2 (float) : y-coordinate of second point
     """
 
-    return ((x1-x2)**2 + (y1-y2)**2)**0.5
+    return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
 
 
-
-def circleIntersection(x1,y1,r1,x2,y2,r2):
+def circleIntersection(x1, y1, r1, x2, y2, r2):
 
     """
     Used to find whether two circles are intersecting
@@ -30,33 +30,34 @@ def circleIntersection(x1,y1,r1,x2,y2,r2):
             r2 (float) : Radius of second circle
     """
 
-    return distance(x1,y1,x2,y2) < r1 + r2 + EPSILON 
+    return distance(x1, y1, x2, y2) < r1 + r2 + EPSILON
+
 
 class Circle:
 
     """
-    Used to create circle objects with some center, speed, radius and origin time. 
+    Used to create circle objects with some center, speed, radius and origin time.
     Circle objects are used to create bullets and balloons.
     """
 
-    def __init__(self,center,speed,width,otime):
+    def __init__(self, center, speed, width, otime):
 
         """
         Args:
                 center (List<float>) : Center of circle object
-                speed (List<float>) : speed vector of Circle object 
+                speed (List<float>) : speed vector of Circle object
                 width (float) : Radius of Circle object
                 otime (float) : origin time of Circle object
         """
 
-        self.center  = center
-        self.width   = width
-        self.speed   = speed
+        self.center = center
+        self.width = width
+        self.speed = speed
         for i in self.speed:
-            i = round(i,2)
-        self.otime   = otime 
+            i = round(i, 2)
+        self.otime = otime
 
-    def getPosition(self,currTime):
+    def getPosition(self, currTime):
 
         """
         Used to get the position of a circle object at a specific time
@@ -66,12 +67,15 @@ class Circle:
 
         """
 
-        timediff = currTime - self.otime 
+        timediff = currTime - self.otime
         # print(self.center,self.speed,timediff)
-        return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff]
-        #TODO: check:  return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
+        return [
+            self.center[0] + self.speed[0] * timediff,
+            self.center[1] + self.speed[1] * timediff,
+        ]
+        # TODO: check:  return [self.center[0]+self.speed[0]*timediff,self.center[1] + self.speed[1]*timediff,self.center[2]]
 
-    def intersects(self,other,currTime):
+    def intersects(self, other, currTime):
 
         """
         Checks whether this object intersects with an "other" object
@@ -82,11 +86,11 @@ class Circle:
 
         """
 
-        if currTime < self.otime or currTime < other.otime: 
+        if currTime < self.otime or currTime < other.otime:
             return False
-        otherPos =  other.getPosition(currTime)
-        myPos    =  self.getPosition(currTime)
-        return circleIntersection(*myPos,self.width,*otherPos,other.width)
+        otherPos = other.getPosition(currTime)
+        myPos = self.getPosition(currTime)
+        return circleIntersection(*myPos, self.width, *otherPos, other.width)
 
     def getState(self):
 
@@ -95,10 +99,15 @@ class Circle:
 
         """
 
-        return {'center':self.center,'width':self.width,'speed':self.speed,'otime':self.otime}
-    
+        return {
+            "center": self.center,
+            "width": self.width,
+            "speed": self.speed,
+            "otime": self.otime,
+        }
+
     def copy(self):
-       
+
         """
         Returns a copy of this object
 

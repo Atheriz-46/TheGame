@@ -5,22 +5,27 @@ import argparse
 import time as T
 from tick import *
 import sys
-from constants import * 
-from networkLibrary import * 
+from constants import *
+from networkLibrary import *
 import json
+
 
 class NetworkClient:
     """
     Handles networking for the game client
     """
+
     def send(self):
         """
         Threading function for perodically sending server data about user activity
         """
         while self.active:
-            T.sleep(max(STATE_SYNC_LATENCY,self.parent.latencyMode))
+            T.sleep(max(STATE_SYNC_LATENCY, self.parent.latencyMode))
             try:
-                sendMessage(self.communicator,str(time())+" "+json.dumps(self.parent.getState()))
+                sendMessage(
+                    self.communicator,
+                    str(time()) + " " + json.dumps(self.parent.getState()),
+                )
             except:
                 self.active = False
                 self.parent.gui.endMenu.tkraise()
@@ -42,7 +47,7 @@ class NetworkClient:
             print(message)
             self.parent.setState(message)
             cp = self.parent.getGameCopy()
-            if(cp.gameEnded):
+            if cp.gameEnded:
                 self.active = False
                 self.parent.gui.endMenu.tkraise()
 
@@ -50,14 +55,14 @@ class NetworkClient:
         """
         Helper function to register the client with the server and initialize threads
         """
-        self.communicator   = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.communicator.connect((self.server_ip,self.server_port)) 
+        self.communicator = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.communicator.connect((self.server_ip, self.server_port))
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
         sendThread.start()
 
-    def __init__(self,server_ip,server_port,parent):
+    def __init__(self, server_ip, server_port, parent):
         """
         Initializer for Network client
         Args:

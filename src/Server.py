@@ -1,14 +1,17 @@
-from overallState   import OverallState
-from gameMode       import GameMode
-from nServer        import NetworkServer
-from threading      import Thread, Lock
-from tick           import *
-from time           import sleep
+from overallState import OverallState
+from gameMode import GameMode
+from nServer import NetworkServer
+from threading import Thread, Lock
+from tick import *
+from time import sleep
+
+
 class Server:
     """
     Class to handle overall Server operations.
     """
-    def __init__(self,ip = '127.0.0.1',port = 65432,**kwargs):
+
+    def __init__(self, ip="127.0.0.1", port=65432, **kwargs):
         """Initializer for Server
 
         Args:
@@ -18,47 +21,47 @@ class Server:
         self.gm = GameMode(**kwargs)
         self.leftGame = 0
         self.game = OverallState(self.gm)
-        self.moveList = [] 
+        self.moveList = []
         self.moveList.append([])
         self.moveList.append([])
-        self.qMutex         = Lock()
-        self.sMutex         = Lock()
-        self.lMutex         = Lock()
-        self.network = NetworkServer(parent = self,game = self.game,ip = ip, port = port)
-        self.updateThread   = Thread(target=self.updateState)
+        self.qMutex = Lock()
+        self.sMutex = Lock()
+        self.lMutex = Lock()
+        self.network = NetworkServer(parent=self, game=self.game, ip=ip, port=port)
+        self.updateThread = Thread(target=self.updateState)
         self.updateThread.start()
         self.updateThread.join()
-        
+
     def vacate(self):
         """
         Cleans the server after the game is over.
         """
         self.lMutex.acquire()
         try:
-            self.leftGame+=1
-            if self.leftGame==2:
+            self.leftGame += 1
+            if self.leftGame == 2:
                 self.leftGame = 0
                 self.flush()
         finally:
             self.lMutex.release()
-        
+
     def updateState(self):
         """
         Updates the overall state of the game.
         """
-        while(True):
-            sleep(STATE_UPDATE_LATENCY/2)
+        while True:
+            sleep(STATE_UPDATE_LATENCY / 2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:
-                self.game.updateState(self.moveList[0],self.moveList[1])
+                self.game.updateState(self.moveList[0], self.moveList[1])
                 self.moveList[0] = []
                 self.moveList[1] = []
             finally:
                 self.qMutex.release()
                 self.sMutex.release()
-    
-    def addMoves(self,playerNumber,mList):
+
+    def addMoves(self, playerNumber, mList):
         """Adds moves to the queues of both the players.
 
         Args:
@@ -97,4 +100,4 @@ class Server:
             cp = self.game.copy()
         finally:
             self.sMutex.release()
-        return cp 
+        return cp
