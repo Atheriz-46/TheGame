@@ -1,6 +1,7 @@
 import math
+import tkinter as tk
 from threading import Thread
-from tkinter import Tk, Canvas, Frame, BOTH,Label, SUNKEN
+from tkinter import Tk, Canvas, Frame, BOTH,Label, SUNKEN, LEFT, RIGHT, X
 from tick import *
 from constants import *
 # import keyboard
@@ -11,6 +12,7 @@ class GUIManager(Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.parent = parent
+        self.scoreboard = ScoreBoard(self)        
         self.graphics = Graphics(self)
         self.graphics.grid(row=0, column=0, sticky="nsew")
         self.endMenu = EndMenu(self)
@@ -74,9 +76,25 @@ class EndMenu(Frame):
         label1.image = test
         label1.pack()
 
-# class ScoreBoard(Frame):
-#     def __init__(self,parent):
-#         Frame.__init__(self,master = parent,relief=SUNKEN, borderwidth=1)
+class ScoreBoard(Frame):
+    def __init__(self,parent):
+
+        Frame.__init__(self,master = parent,relief=SUNKEN, borderwidth=1)
+        self.parent = parent
+
+        self.lbl_leftScore = Label(text = self.parent.parent.state.players[0].points, fg = "white" , bg = "black", master = self)
+        self.lbl_rightScore = Label(text = self.parent.parent.state.players[1].points, fg = "white" , bg = "black", master = self)
+
+        self.lbl_leftScore.pack(fill = tk.X, side = LEFT)
+        self.lbl_rightScore.pack(fill = tk.X, side = RIGHT)
+
+        self.grid_rowconfigure(1, weight = 2)
+        self.grid_columnconfigure(0, weight = 2)
+        self.grid(row = 1, column = 0)
+
+    def updatePoints(self):
+        self.lbl_leftScore.config(text = self.parent.parent.state.players[0].points)
+        self.lbl_rightScore.config(text = self.parent.parent.state.players[1].points)
 
 class Graphics(Frame):
     def __init__(self,parent):
@@ -108,8 +126,10 @@ class Graphics(Frame):
         self.canvas.delete("shooter")
         self.draw_balloon(state.balloons)
         self.draw_players(state.players)
+        self.parent.scoreboard.updatePoints()
         self.canvas.update()
-        self.master.after(10,self.draw)    
+        self.master.after(10,self.draw)
+
     def draw_balloon(self,balloons):
         for balloon in balloons:
             x,y = balloon.center
