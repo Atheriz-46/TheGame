@@ -25,7 +25,6 @@ class Client:
         self.sMutex = Lock()
         self.state = OverallState(GameMode())
         self.latencyMode = latencyMode
-        STATE_UPDATE_LATENCY += latencyMode
         self.networkManager = NetworkClient(server_ip, server_port, self)
         self.gui = GUIManager(self)
         self.updateThread = Thread(target=self.updateState)
@@ -38,7 +37,7 @@ class Client:
         Loops over a thread to constanly update the local instance of game based on user inputs
         """
         while True:
-            sleep(STATE_UPDATE_LATENCY / 2)
+            sleep( max(STATE_UPDATE_LATENCY,self.latencyMode) / 2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:
