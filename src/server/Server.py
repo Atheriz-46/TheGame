@@ -1,8 +1,8 @@
-from overallState import OverallState
-from gameMode import GameMode
-from nServer import NetworkServer
+from common.overallState import OverallState
+from common.gameMode import GameMode
+from server.network import NetworkServer
 from threading import Thread, Lock
-from tick import *
+from common.tick import *
 from time import sleep
 
 

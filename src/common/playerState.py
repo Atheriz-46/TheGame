@@ -1,7 +1,7 @@
 import math
-from tick import *
-from constants import *
-from bullet import Bullet
+from common.tick import *
+from common.constants import *
+from common.bullet import Bullet
 
 
 class PlayerState:

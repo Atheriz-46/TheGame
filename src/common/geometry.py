@@ -1,4 +1,4 @@
-from constants import *
+from common.constants import *
 
 
 def distance(x1, y1, x2, y2):

@@ -1,9 +1,9 @@
 import json
-from tick import *
-from constants import *
-from playerState import PlayerState
+from common.tick import *
+from common.constants import *
+from common.playerState import PlayerState
 from random import random, seed, randint
-from balloonState import Balloon
+from common.balloonState import Balloon
 
 
 class OverallState:
@@ -239,8 +239,8 @@ class OverallState:
         gm = self.gm.copy()
         cop = OverallState(gm)
         for k, v in zip(
-            ["players", "balloons", "offset", "me"],
-            [players, balloons, self.offset, self.me],
+            ["players", "balloons", "offset", "me","gameEnded"],
+            [players, balloons, self.offset, self.me, self.gameEnded],
         ):
             setattr(cop, k, v)
         return cop

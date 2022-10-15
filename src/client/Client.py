@@ -1,11 +1,11 @@
-from GUIManager import GUIManager
+from client.GUIManager import GUIManager
 from time import sleep
-from tick import *
-from nClient import NetworkClient
-from overallState import OverallState
-from gameMode import GameMode
+from common.tick import *
+from client.network import NetworkClient
+from common.overallState import OverallState
+from common.gameMode import GameMode
 from threading import Thread, Lock
-from AskIP import AskIP
+from client.AskIP import AskIP
 
 
 class Client:

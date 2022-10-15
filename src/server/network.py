@@ -3,12 +3,12 @@ import threading
 import re
 import argparse
 import time as T
-from tick import *
+from common.tick import *
 import sys
-from constants import *
-from overallState import OverallState
-from playerState import PlayerState
-from networkLibrary import *
+from common.constants import *
+from common.overallState import OverallState
+from common.playerState import PlayerState
+from common.networkLibrary import *
 import json
 
 

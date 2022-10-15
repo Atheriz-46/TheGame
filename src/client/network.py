@@ -3,10 +3,10 @@ import threading
 import re
 import argparse
 import time as T
-from tick import *
+from common.tick import *
 import sys
-from constants import *
-from networkLibrary import *
+from common.constants import *
+from common.networkLibrary import *
 import json
 
 
