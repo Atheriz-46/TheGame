@@ -2,10 +2,14 @@ from .constants import FIXED_SIZE
 from time import sleep
 from threading import Thread,Lock
 class messenger:
-    def __init__(self):
+    def __init__(self,conn):
         self.buffer = []
         self.messageBuffer = []
-    def sendMessage(conn, s):
+        self.conn = conn
+        self.rlock = Lock()
+        self.readThread = Thread(target=self.reader)
+        self.readThread.start()
+    def sendMessage(self,s):
         """
         Used to send message s using Socket conn.
         Handles underflow and overflow of messages.
@@ -20,13 +24,13 @@ class messenger:
         for i in s:
             p += i
             if len(p.encode("utf-16")) >= FIXED_SIZE:
-                conn.send(p.encode("utf-16"))
+                self.conn.send(p.encode("utf-16"))
                 p = ""
         if len(p):
-            conn.send(p.encode("utf-16"))
+            self.conn.send(p.encode("utf-16"))
 
 
-    def recieveMessage(self,conn):
+    def recieveMessage(self):
         """
         Used to receive messages over Socket conn
 
@@ -38,7 +42,7 @@ class messenger:
             self.rlock.acquire()
             if len(self.messageBuffer):
                 p = self.messageBuffer[0]
-                messageBuffer.pop(0)
+                self.messageBuffer.pop(0)
                 self.rlock.release()
                 return p 
             else:
@@ -46,9 +50,9 @@ class messenger:
                 sleep(0.05)
 
             
-    def reader(self,conn):
+    def reader(self):
         while True:
-            curr = conn.recv(FIXED_SIZE).decode("utf-16") 
+            curr = self.conn.recv(FIXED_SIZE).decode("utf-16") 
             for i in curr:
                 if i == '%':
                     self.rlock.acquire()

@@ -5,7 +5,7 @@ import time as T
 
 from ..common.tick import *
 from ..common.constants import *
-from ..common.networkLibrary import *
+from ..common.networkLibrary import messenger
 
 
 class NetworkClient:
@@ -20,7 +20,7 @@ class NetworkClient:
         while self.active:
             T.sleep(max(STATE_SYNC_LATENCY, self.parent.latencyMode))
             try:
-                sendMessage(
+                self.messenger.sendMessage(
                     self.communicator,
                     str(time()) + " " + json.dumps(self.parent.getState()),
                 )
@@ -34,7 +34,7 @@ class NetworkClient:
         """
         while self.active:
             try:
-                message = recieveMessage(self.communicator)
+                message = self.messenger.recieveMessage(self.communicator)
             except:
                 self.active = False
                 self.parent.gui.endMenu.fix()
@@ -73,3 +73,4 @@ class NetworkClient:
         self.parent = parent
         self.active = True
         self.register()
+        self.messenger = messenger(self.communicator)

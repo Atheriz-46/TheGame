@@ -5,7 +5,7 @@ import json
 
 from ..common.tick import *
 from ..common.constants import *
-from ..common.networkLibrary import *
+from ..common.networkLibrary import messenger
 class NetworkServer:
     """
     Handles the network layer of Server.
@@ -63,6 +63,7 @@ class Connection(threading.Thread):
         """
         threading.Thread.__init__(self)
         self.communicator = socket
+        self.messenger = messenger(self.communicator)
         self.active = True
         self.retAddr = retAddr
         self.playerNumber = playerNumber
@@ -93,7 +94,7 @@ class Connection(threading.Thread):
         """
         while self.active:
             try:
-                message = recieveMessage(self.communicator)
+                message = self.messenger.recieveMessage(self.communicator)
             except:
                 self.active = False
                 break
@@ -125,7 +126,7 @@ class Connection(threading.Thread):
             cpState.changeTimeBy(-1 * self.delta)
             cpState.me = self.playerNumber
             try:
-                sendMessage(self.communicator, json.dumps(cpState.getState()))
+                self.messenger.sendMessage(self.communicator, json.dumps(cpState.getState()))
             except:
                 self.active = False
                 break
