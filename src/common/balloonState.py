@@ -1,5 +1,5 @@
-from geometry import *
-from constants import *
+from .geometry import *
+from .constants import *
 
 
 class Balloon(Circle):

@@ -34,5 +34,5 @@ GUN_SIZE = 7
 GUN_WIDTH = 4
 N_PLAYERS = 2
 IP = "127.0.0.1"
-port = 17173
+port = 17172
 print(f"Port number is {port}")

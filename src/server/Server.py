@@ -1,11 +1,10 @@
-from overallState import OverallState
-from gameMode import GameMode
-from nServer import NetworkServer
 from threading import Thread, Lock
-from tick import *
 from time import sleep
 
-
+from ..common.overallState import OverallState
+from ..common.tick import *
+from ..common.gameMode import GameMode
+from .network import NetworkServer
 class Server:
     """
     Class to handle overall Server operations.

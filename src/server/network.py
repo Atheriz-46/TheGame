@@ -1,17 +1,11 @@
 import socket
 import threading
-import re
-import argparse
 import time as T
-from tick import *
-import sys
-from constants import *
-from overallState import OverallState
-from playerState import PlayerState
-from networkLibrary import *
 import json
 
-
+from ..common.tick import *
+from ..common.constants import *
+from ..common.networkLibrary import *
 class NetworkServer:
     """
     Handles the network layer of Server.
