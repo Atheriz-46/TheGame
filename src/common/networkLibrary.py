@@ -51,7 +51,6 @@ class messenger:
                 return p 
             else:
                 self.rlock.release()
-                sleep(0.05)
 
             
     def reader(self):
