@@ -1,5 +1,15 @@
 FIXED_SIZE = 1024
 def sendMessage(conn,s):
+    """
+    Used to send message s using Socket conn. 
+    Handles underflow and overflow of messages. 
+    Acts as a middle layer between networks buffers and higher level functions.
+
+    Args:
+            conn (Socket) : Socket over which message is to be sent
+            s (str) : Message to be sent
+    """
+
     s+="%"
     p = ''
     for i in s:
@@ -15,6 +25,12 @@ def sendMessage(conn,s):
         conn.send(p.encode('utf-16'))
 
 def recieveMessage(conn):
+    """
+    Used to receive messages over Socket conn
+
+    Args:
+            conn (Socket) : Socket over which messages are to be received
+    """
     s = ''
     while True:
         curr = conn.recv(FIXED_SIZE).decode('utf-16')

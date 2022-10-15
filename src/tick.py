@@ -9,7 +9,7 @@ def tickValue(x):
 			x (float) : Time in seconds
 	"""
     return round( (x*1000)/TICK_RATE )
-
+    
 def currTicks():
 	"""
 	Used to get the number of ticks from current system time
