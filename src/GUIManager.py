@@ -126,6 +126,11 @@ class ScoreBoard(Frame):
 
 class Graphics(Frame):
     def __init__(self,parent):
+        """Initialises the Grapics object
+
+        Args:
+            parent (tkinter.Frame, tkinter.Tk): Frame/Window object which contains the current frame.
+        """
         Frame.__init__(self,master = parent)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -139,6 +144,8 @@ class Graphics(Frame):
         
     
     def draw(self):
+        """Draws the current state on canvas
+        """
         self.master.update()
         self.time = time()
         w,h = self.canvas.winfo_width(),self.canvas.winfo_height()
