@@ -18,7 +18,7 @@ class NetworkClient:
         Threading function for perodically sending server data about user activity
         """
         while self.active:
-            T.sleep(max(STATE_SYNC_LATENCY,self.parent.latencyMode))
+            T.sleep(STATE_SYNC_LATENCY)
             try:
                 self.messenger.sendMessage(
                     self.communicator,
@@ -53,7 +53,7 @@ class NetworkClient:
         """
         self.communicator = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.communicator.connect((self.server_ip, self.server_port))
-        self.messenger = messenger(self.communicator)
+        self.messenger = messenger(self.communicator,self.parent.latencyMode)
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
