@@ -5,11 +5,20 @@ from playerState        import PlayerState
 from random             import random,seed,randint
 from balloonState       import Balloon
 class OverallState:
-
+    """
+    Used to create object to store information about the current state of the game
+    """
     def tickValue(self):
+        """
+        Used to get the number of ticks since last update
+        """
         return currTicks() - self.offset
     
     def __init__(self,gameMode):
+        """
+        Args:
+                gameMode (GameMode) : GameMode object which determines parameters of game
+        """
         self.players = []
         self.balloons = []
         self.gm = gameMode
@@ -19,6 +28,9 @@ class OverallState:
         self.gameEnded = False 
 
     def createPlayer(self):
+        """
+        Used to create player using PlayerState Class
+        """
         
         if len(self.players)+1 > N_PLAYERS:
             raise Exception(f"Lobby Full. Lobby limit is {N_PLAYERS}.\n Current Players in Lobby : {len(self.players)}")
@@ -34,6 +46,13 @@ class OverallState:
             return player,1
 
     def updateState(self,leftPlayerInputs,rightPlayerInputs):
+        """
+        Used to update the state of the game 
+
+        Args:
+                leftPlayerInputs (List<float, string>) : Timestamped inputs from the left Player
+                rightPlayerInputs (List<float, string>) : Timestamped inputs from the right Player
+        """
         if len(self.players) < 2:
             self.startTime = time()
             return 
@@ -126,6 +145,9 @@ class OverallState:
             currPlayer.cleanBullets(timeFromTick(self.offset)-4)
         
     def getState(self):
+        """
+        Used to get state of this object in JSON format
+        """
         return {'players':[x.getState() for x in self.players], 
                 'balloons': [x.getState() for x in self.balloons], 
                 'offset' : self.offset, 
@@ -135,6 +157,12 @@ class OverallState:
                 }
     
     def setState(self,state):
+        """
+        Used to set attributes of this object from JSON format
+
+        Args:
+                state (Dict<str, Object>) : Object state to be set in JSON format
+        """
 
         for k, v in state.items():
             if (k == 'gm'):
@@ -162,6 +190,12 @@ class OverallState:
 
 
     def changeTimeBy(self,x):
+        """
+        Used to forward time by x seconds
+
+        Args:
+                x (float) : Time in seconds to be forwarded
+        """
 
         # change offset 
         self.offset += tickValue(x)
@@ -176,6 +210,9 @@ class OverallState:
                 bullet.otime += x 
     
     def copy(self):
+        """
+        Returns a copy of this object
+        """
         players = [x.copy() for x in self.players]
         balloons = [x.copy() for x in self.balloons]
         
