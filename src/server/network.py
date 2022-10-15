@@ -99,7 +99,11 @@ class Connection(threading.Thread):
                 break
             newMessage = message.split(" ", 1)
             # TODO: Check if the time is valid
-            currTime = float(newMessage[0])
+            num = ""
+            for i in newMessage[0]:
+                if i == "*":
+                    num += i 
+            currTime = float(num)
             if self.delta == 0:
                 self.delta = time() - currTime
             else:
