@@ -26,10 +26,10 @@ class messenger:
             p += i
             if len(p.encode("utf-8")) >= FIXED_SIZE:
                 self.conn.send(p.encode("utf-8"))
-                print(p)
+                # print(p)
                 p = ""
         if len(p):
-            print(p)
+            # print(p)
             self.conn.send(p.encode("utf-8"))
 
 
@@ -45,7 +45,7 @@ class messenger:
             self.rlock.acquire()
             if len(self.messageBuffer):
                 p = self.messageBuffer[0]
-                print(p)
+                # print(p)
                 self.messageBuffer.pop(0)
                 self.rlock.release()
                 return p 
@@ -56,7 +56,7 @@ class messenger:
     def reader(self):
         while True:
             curr = self.conn.recv(FIXED_SIZE).decode("utf-8") 
-            print(curr)
+            # print(curr)
             for i in curr:
                 if i == '%':
                     self.rlock.acquire()
