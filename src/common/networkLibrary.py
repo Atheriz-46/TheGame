@@ -9,7 +9,7 @@ class messenger:
         self.rlock = Lock()
         self.readThread = Thread(target=self.reader)
         self.readThread.start()
-    def sendMessage(self,s):
+    def sendMessage(self,sock,s):
         """
         Used to send message s using Socket conn.
         Handles underflow and overflow of messages.
@@ -21,6 +21,7 @@ class messenger:
         """
 
         s += "%"
+        p = ""
         for i in s:
             p += i
             if len(p.encode("utf-16")) >= FIXED_SIZE:
@@ -30,7 +31,7 @@ class messenger:
             self.conn.send(p.encode("utf-16"))
 
 
-    def recieveMessage(self):
+    def recieveMessage(self,sock):
         """
         Used to receive messages over Socket conn
 

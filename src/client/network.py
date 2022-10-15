@@ -55,6 +55,7 @@ class NetworkClient:
         """
         self.communicator = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.communicator.connect((self.server_ip, self.server_port))
+        self.messenger = messenger(self.communicator)
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
@@ -73,4 +74,4 @@ class NetworkClient:
         self.parent = parent
         self.active = True
         self.register()
-        self.messenger = messenger(self.communicator)
+        
