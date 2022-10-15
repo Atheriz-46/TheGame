@@ -18,7 +18,7 @@ class GameMode:
 
 	def getState(self):
 		"""
-		Used to get state of this object in JSON
+		Used to get state of this object in JSON format
 		"""
 		return {'velocityBullets' : self.velocityBullets, 'regenBullets': self.regenBullets, 'balloonSeed' : self.balloonSeed, 'balloonCount' : self.balloonCount}
 
