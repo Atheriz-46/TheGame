@@ -25,6 +25,7 @@ class OverallState:
         self.players = []
         self.balloons = []
         self.gm = gameMode
+        self.startTime = time()
         self.offset = currTicks()
         self.me = 0
         # TODO add to gameEnded setattr getattr and copy
