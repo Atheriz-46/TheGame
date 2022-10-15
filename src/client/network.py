@@ -18,7 +18,7 @@ class NetworkClient:
         Threading function for perodically sending server data about user activity
         """
         while self.active:
-            T.sleep(max(STATE_SYNC_LATENCY, self.parent.latencyMode))
+            T.sleep(STATE_SYNC_LATENCY)
             try:
                 self.messenger.sendMessage(
                     self.communicator,
@@ -39,8 +39,6 @@ class NetworkClient:
                 self.active = False
                 self.parent.gui.endMenu.fix()
                 break
-            if self.parent.latencyMode:
-                T.sleep(self.parent.latencyMode)
             message = json.loads(message)
             # print(message)
             self.parent.setState(message)
