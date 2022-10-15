@@ -81,7 +81,7 @@ class Connection(threading.Thread):
         sendThread.start()
         recvThread.join()
         sendThread.join()
-        self.parent.vacate()
+        self.parent.parent.vacate()
         try:
             self.communicator.close()
         finally:
