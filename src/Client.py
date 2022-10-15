@@ -7,8 +7,16 @@ from gameMode           import GameMode
 from threading          import Thread, Lock
 from AskIP import AskIP
 class Client:
-    
+    """
+    Class to handle overall Client operations and sub objects
+    """
     def __init__(self,server_ip,server_port,latencyMode = 0):
+        """
+        Args:
+            server_ip (String) : IP address of server to connect to
+            server_port (int) :  port of the server to connect to
+            latencyMode (int) : Artificial latency to be added for testing purposes
+        """
         self.eventQueue     = []
         self.qMutex         = Lock()
         self.sMutex         = Lock()
@@ -22,6 +30,9 @@ class Client:
         # self.updateThread.join()
         
     def updateState(self):
+        """
+        Loops over a thread to constanly update the local instance of game based on user inputs 
+        """
         while(True):
             sleep(STATE_UPDATE_LATENCY/2)
             self.sMutex.acquire()
@@ -38,6 +49,9 @@ class Client:
                 self.sMutex.release()
 
     def rotateClock(self):
+        """
+        API for handelling clockwise rotation of gun by the user 
+        """
         self.qMutex.acquire()
         try:
             self.eventQueue.append([time(),'C'])
@@ -45,6 +59,9 @@ class Client:
             self.qMutex.release()
 
     def rotateAntiClock(self):
+        """
+        API for handelling Anticlockwise rotation of gun by the user 
+        """
         self.qMutex.acquire()
         try:
             self.eventQueue.append([time(),'A'])
@@ -52,6 +69,11 @@ class Client:
             self.qMutex.release()
 
     def getState(self):
+        """
+        creates a json compaitiable Client object
+        Returns:
+            List<float,string>: List of inputs by user to be send to server
+        """
         self.qMutex.acquire()
         try:
             ret = self.eventQueue.copy()
@@ -61,12 +83,22 @@ class Client:
             return ret 
 
     def setState(self,state):
+        """
+        Sets the state of OverallState of the Client game using JSON
+        Args:
+            state (JSON String): Client OverallState recieved from server
+        """
         self.sMutex.acquire()
         try:
             self.state.setState(state)   
         finally:
             self.sMutex.release()
     def getGameCopy(self):
+        """
+        Returns a copy of game State in the Client
+        Returns:
+            OverallState: game State in the Client
+        """
         self.sMutex.acquire()
         try:
             cp = self.state.copy()
