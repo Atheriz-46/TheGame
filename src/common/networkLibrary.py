@@ -24,11 +24,11 @@ class messenger:
         p = ""
         for i in s:
             p += i
-            if len(p.encode("utf-16")) >= FIXED_SIZE:
-                self.conn.send(p.encode("utf-16"))
+            if len(p.encode("utf-8")) >= FIXED_SIZE:
+                self.conn.send(p.encode("utf-8"))
                 p = ""
         if len(p):
-            self.conn.send(p.encode("utf-16"))
+            self.conn.send(p.encode("utf-8"))
 
 
     def recieveMessage(self,sock):
@@ -53,7 +53,7 @@ class messenger:
             
     def reader(self):
         while True:
-            curr = self.conn.recv(FIXED_SIZE).decode("utf-16") 
+            curr = self.conn.recv(FIXED_SIZE).decode("utf-8") 
             for i in curr:
                 if i == '%':
                     self.rlock.acquire()
