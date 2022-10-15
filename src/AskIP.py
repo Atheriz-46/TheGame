@@ -4,9 +4,7 @@ import constants
 
 class AskIP(tk.Tk):
     """
-    Extends tkinter Window to create a prompt to ask for directory of wiki [DEPRECIATED]
-    Args:
-        articleName (str): String contains the directory of wiki to be passed back
+    Extends tkinter Window to create a prompt to ask for IP, Port of the Server and Latency of the connection
     """
 
     def handleSubmit(self):
@@ -22,6 +20,10 @@ class AskIP(tk.Tk):
         self.destroy()
 
     def __init__(self, txt):
+        """
+        Args:
+                txt (ServerData) : Reference to ServerData object 
+        """
         tk.Tk.__init__(self)
         self.str = txt
         self.title("Enter Server Details")
@@ -50,6 +52,10 @@ class AskIP(tk.Tk):
 
 
 class ServerData:
+    """
+    Used to create object to store information about Server Data
+    """
+
     IP = constants.IP
     Port = constants.port
     Latency = 0
