@@ -102,7 +102,8 @@ class Connection(threading.Thread):
             num = ""
             for i in newMessage[0]:
                 if i == "*":
-                    num += i 
+                    continue
+                num += i 
             currTime = float(num)
             if self.delta == 0:
                 self.delta = time() - currTime
