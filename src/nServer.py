@@ -8,6 +8,7 @@ import sys
 from constants import *
 from overallState import OverallState
 from playerState import PlayerState
+from networkLibrary import *
 import json
 class NetworkServer:
     def __init__(self,parent,ip = '127.0.0.1',port = 65432,game=None):
@@ -67,7 +68,7 @@ class Connection(threading.Thread):
     def receive(self):
         while self.active:
             try:
-                message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+                message = recieveMessage(self.communicator)
             except:
                 self.active = False
                 break
@@ -78,11 +79,15 @@ class Connection(threading.Thread):
                 self.delta = time() - currTime
             else : 
                 self.delta = ALPHA*self.delta + (1 - ALPHA)*(time() - currTime)
-
-            moveList = json.loads(newMessage[1])
-            for i in moveList:
-                i[0] += self.delta
-            self.parent.parent.addMoves(self.playerNumber,moveList)
+            
+            print(newMessage)
+            try:
+                moveList = json.loads(newMessage[1])
+                for i in moveList:
+                    i[0] += self.delta
+                self.parent.parent.addMoves(self.playerNumber,moveList)
+            except:
+                continue
 
     def send(self):
         while self.active:
@@ -91,7 +96,7 @@ class Connection(threading.Thread):
             cpState.changeTimeBy(-1*self.delta)
             cpState.me = self.playerNumber
             try:
-                self.communicator.send(json.dumps(self.game.getState()).encode('utf-16'))
+                sendMessage(self.communicator,json.dumps(self.game.getState()))
             except:
                 self.active = False
                 break

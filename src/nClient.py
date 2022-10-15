@@ -6,6 +6,7 @@ import time as T
 from tick import *
 import sys
 from constants import * 
+from networkLibrary import * 
 import json
 
 class NetworkClient:
@@ -14,7 +15,7 @@ class NetworkClient:
         while self.active:
             T.sleep(max(STATE_SYNC_LATENCY,self.parent.latencyMode))
             try:
-                self.communicator.send((str(time())+" "+json.dumps(self.parent.getState())).encode('utf-16'))
+                sendMessage(self.communicator,str(time())+" "+json.dumps(self.parent.getState()))
             except:
                 self.active = False
                 self.parent.gui.endMenu.tkraise()
@@ -22,7 +23,7 @@ class NetworkClient:
     def recieve(self):
         while self.active:
             try:
-                message = self.communicator.recv(STATE_MESSAGE_SIZE).decode('utf-16')
+                message = recieveMessage(self.communicator)
             except:
                 self.active = False
                 self.parent.gui.endMenu.tkraise()
@@ -30,6 +31,7 @@ class NetworkClient:
             if self.parent.latencyMode:
                 T.sleep(self.parent.latencyMode)
             message = json.loads(message)
+            print(message)
             self.parent.setState(message)
             cp = self.parent.getGameCopy()
             if(cp.gameEnded):
