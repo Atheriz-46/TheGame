@@ -7,7 +7,17 @@ from constants import *
 # import keyboard
 from PIL import Image, ImageTk
 class GUIManager(Tk):
+    """The main GUI manager class for the game
+
+    Inherited:
+        tkinter.Tk : Tkinter Window Class
+    """
     def __init__(self,parent):
+        """Initialises the GUI Manager class
+
+        Args:
+            parent (Client): The client object which contains this object's instance
+        """
         Tk.__init__(self)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -22,42 +32,39 @@ class GUIManager(Tk):
         self.isStarted = False
 
     def startGame(self):
+        """Signals start of the game.
+        """
         if not self.isStarted:
             self.graphics.tkraise()
-            # self.keyboardThread   = Thread(target=self.keyboard)
-            # self.keyboardThread.start()
             self.isStarted = True
             self.keyboard()
     def exit(self):
-        # self.parent.quit()
+        """
+        Exits the game
+        """
         print("Game Quitted!!")
         exit()
     def keyboard(self):
+        """Binds the keyboard control to functions
+        """
         print(f"Keyboard is on baby")
         self.graphics.canvas.bind("<Button-1>", lambda event: self.parent.rotateAntiClock())
         self.graphics.canvas.bind("<Button-3>", lambda event: self.parent.rotateClock())  
-       
-        # while True:
-        #     try:
-        #         if keyboard.is_pressed('q'):
-        #             print('Q')
-        #             self.parent.turnAntiClock()
-        #         elif keyboard.is_pressed('e'):
-        #             print('E')
-        #             self.parent.turnClock()
-        #         elif keyboard.is_pressed('p'):
-        #             print('P')
-        #             self.parent.quit()
-        #             break
-        #     except:
-        #         pass
-        
-        # self.endMenu.tkraise()
     
                 
         
 class StartMenu(Frame):
+    """StartMenu Page Frame Class
+
+    Inherits:
+        Frame : Tkinter Frame Class
+    """
     def __init__(self,parent):
+        """Initialises Start menu
+
+        Args:
+            parent (tkinter.Tk): The parent object(Frame/Window).
+        """
         Frame.__init__(self, parent)
         
         self.parent = parent
@@ -67,7 +74,17 @@ class StartMenu(Frame):
         label1.image = test
         label1.pack()        
 class EndMenu(Frame):
+    """EndMenu Page Frame Class
+
+    Inherits:
+        Frame : Tkinter Frame Class
+    """
     def __init__(self,parent):
+        """Initialises Start menu
+
+        Args:
+            parent (tkinter.Tk): The parent object(Frame/Window).
+        """
         Frame.__init__(self, parent)
         self.parent = parent
         image1 = Image.open("./test.jpeg")
