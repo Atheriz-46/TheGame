@@ -3,10 +3,11 @@ from time import sleep
 from threading import Thread,Lock
 class messenger:
     """Handles the message sending and recieving over a socket"""
-    def __init__(self,conn):
+    def __init__(self,conn,latency = 0):
         self.buffer = []
         self.messageBuffer = []
         self.conn = conn
+        self.latency = latency
         self.rlock = Lock()
         self.readThread = Thread(target=self.reader)
         self.readThread.start()
@@ -27,10 +28,8 @@ class messenger:
             p += i
             if len(p.encode("utf-8")) >= FIXED_SIZE:
                 self.conn.send(p.encode("utf-8"))
-                # print(p)
                 p = ""
         if len(p):
-            # print(p)
             self.conn.send(p.encode("utf-8"))
 
 
@@ -59,6 +58,8 @@ class messenger:
 
         while True:
             curr = self.conn.recv(FIXED_SIZE).decode("utf-8") 
+            if self.latency:
+                sleep(self.latency)
             # print(curr)
             for i in curr:
                 if i == '%':
