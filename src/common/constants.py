@@ -36,4 +36,4 @@ N_PLAYERS = 2
 IP = "127.0.0.1"
 port = 17171
 # print(f"Port number is {port}")
-FIXED_SIZE = 64
+FIXED_SIZE = 1024
