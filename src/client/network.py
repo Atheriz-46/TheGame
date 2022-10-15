@@ -55,7 +55,7 @@ class NetworkClient:
         """
         self.communicator = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.communicator.connect((self.server_ip, self.server_port))
-        self.messenger = messenger(self.communicator)
+        self.messenger = messenger(self.communicator, self.parent.latencyMode)
         recvThread = threading.Thread(target=self.recieve)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
