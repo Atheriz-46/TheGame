@@ -58,6 +58,7 @@ class messenger:
                 if i == '%':
                     self.rlock.acquire()
                     self.messageBuffer.append("".join(self.buffer))
+                    self.buffer = []
                     self.rlock.release()
                 else:
                     self.buffer.append(i)
