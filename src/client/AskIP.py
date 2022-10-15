@@ -20,7 +20,7 @@ class AskIP(tk.Tk):
             self.str.Port = int(p)
         l = self.Latency.get()
         if l:
-            self.str.Latency = int(l)
+            self.str.Latency = float(l)/1000
         self.destroy()
 
     def __init__(self, txt):
