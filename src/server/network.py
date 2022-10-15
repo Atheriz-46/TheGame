@@ -124,7 +124,7 @@ class Connection(threading.Thread):
             cpState.changeTimeBy(-1 * self.delta)
             cpState.me = self.playerNumber
             try:
-                sendMessage(self.communicator, json.dumps(self.game.getState()))
+                sendMessage(self.communicator, json.dumps(cpState.getState()))
             except:
                 self.active = False
                 break
