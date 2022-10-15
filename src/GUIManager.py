@@ -142,14 +142,34 @@ class Graphics(Frame):
         self.master.after(10,self.draw)
 
     def draw_balloon(self,balloons):
+        """
+        Used to draw balloons
+
+        Args:
+                balloons (List<Balloon>) : List of balloons objects to be drawn
+        """
         for balloon in balloons:
             x,y = balloon.center
             r = balloon.width
             self.circle(x,y,r,'red','balloon')
+
     def draw_players(self,players):
+        """
+        Draws players by calling draw_player()
+
+        Args:
+            players (List<PlayerState>) : List of players to be drawn
+        """
         for idx,player in enumerate(players):
             self.draw_player(player,idx)
+
     def draw_player(self,player,side):
+        """
+        Used to draw a player (represented visually by their gun)
+
+        Args:
+                player (PlayerState) : Reference to PlayerState object to be drawn
+        """
         self.draw_gun(player,side)
         for bullet in player.bulletsList:
             x,y = bullet.getPosition(self.time)
@@ -158,6 +178,17 @@ class Graphics(Frame):
             
         
     def circle(self,x,y,r,fill='blue',tags='bullet'):
+        """
+        Creates Canvas in shape of a circle
+
+        Args:
+            x (float) : x coordinate of circle to be drawn
+            y (float) : y coordinate of circle to be drawn
+            r (float) : Radius of circle to be drawn
+            fill (str) : Colour of circle
+            tags (str) : Tag of canvas element
+        """
+        
         # TODO: Fill the Circle                         
         x,y,r = (x*self.scale+self.shift_x,y*self.scale+self.shift_y,r*self.scale)
         self.canvas.create_oval(x-r,y-r,x+r,y+r,
@@ -165,6 +196,12 @@ class Graphics(Frame):
                                 tags=tags,
                                     )      
     def draw_gun(self,player,side):
+        """
+        Used to draw gun for player
+
+        Args:
+                player (PlayerState) : Reference to PlayerState object used to draw their gun
+        """
         x,y=player.center
         orientation = player.orientation
         #orientation = player.orientation if side==0 else 180-player.orientation
