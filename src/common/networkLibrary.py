@@ -51,7 +51,7 @@ class messenger:
                 return p 
             else:
                 self.rlock.release()
-
+                sleep(0.01)
             
     def reader(self):
         while True:
@@ -65,4 +65,3 @@ class messenger:
                     self.rlock.release()
                 else:
                     self.buffer.append(i)
-                    sleep(0.01)
