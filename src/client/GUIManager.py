@@ -28,6 +28,7 @@ class GUIManager(Tk):
         self.startMenu = StartMenu(self)
         self.startMenu.grid(row=0, column=0, sticky="nsew")
         self.isStarted = False
+        self.geometry("800x600")
 
     def startGame(self):
         """Signals start of the game.
@@ -36,6 +37,7 @@ class GUIManager(Tk):
             self.graphics.tkraise()
             self.isStarted = True
             self.keyboard()
+
     def exit(self):
         """
         Exits the game
