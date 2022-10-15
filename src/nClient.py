@@ -44,7 +44,7 @@ class NetworkClient:
             if self.parent.latencyMode:
                 T.sleep(self.parent.latencyMode)
             message = json.loads(message)
-            print(message)
+            # print(message)
             self.parent.setState(message)
             cp = self.parent.getGameCopy()
             if cp.gameEnded:

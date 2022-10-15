@@ -111,7 +111,7 @@ class Connection(threading.Thread):
             else:
                 self.delta = ALPHA * self.delta + (1 - ALPHA) * (time() - currTime)
 
-            print(newMessage)
+            # print(newMessage)
             try:
                 moveList = json.loads(newMessage[1])
                 for i in moveList:
