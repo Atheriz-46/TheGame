@@ -121,7 +121,7 @@ class Connection(threading.Thread):
         Threading function for perodically sending game states to user.
         """
         while self.active:
-            T.sleep(STATE_SYNC_LATENCY)
+            T.sleep(max(STATE_SYNC_LATENCY,self.parent.latency)/2)
             cpState = self.parent.parent.getGameCopy()
             cpState.changeTimeBy(-1 * self.delta)
             cpState.me = self.playerNumber

@@ -37,7 +37,7 @@ class Client:
         Loops over a thread to constanly update the local instance of game based on user inputs
         """
         while True:
-            sleep( max(STATE_UPDATE_LATENCY,self.latencyMode) / 2)
+            sleep(STATE_UPDATE_LATENCY/2)
             self.sMutex.acquire()
             self.qMutex.acquire()
             try:
