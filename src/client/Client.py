@@ -24,6 +24,7 @@ class Client:
         self.sMutex = Lock()
         self.state = OverallState(GameMode())
         self.latencyMode = latencyMode
+        STATE_UPDATE_LATENCY += latencyMode
         self.networkManager = NetworkClient(server_ip, server_port, self)
         self.gui = GUIManager(self)
         self.updateThread = Thread(target=self.updateState)

@@ -7,7 +7,7 @@ class messenger:
         self.buffer = []
         self.messageBuffer = []
         self.conn = conn
-        self.latency = latency
+        self.latency = 0
         self.rlock = Lock()
         self.readThread = Thread(target=self.reader)
         self.readThread.start()
