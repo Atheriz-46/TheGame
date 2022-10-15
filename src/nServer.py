@@ -11,6 +11,9 @@ from playerState import PlayerState
 from networkLibrary import *
 import json
 class NetworkServer:
+    """
+    Handles the network layer of Server.
+    """
     def __init__(self,parent,ip = '127.0.0.1',port = 65432,game=None):
         self.game = game
         self.parent = parent
@@ -23,6 +26,8 @@ class NetworkServer:
         # self.regThread.detach()
 
     def register(self):
+        """Registers the listening socket of the server to accept new connections
+        """
         i = 0
         while True:
             
@@ -40,8 +45,23 @@ class NetworkServer:
                 self.parent.sMutex.release()
             
 class Connection(threading.Thread):
+    """A custom class to simulate a single send-receive connection
+
+    Inherited:
+        threading.Thread: Base Threading class of python.
+    """
 
     def __init__(self,parent,player, socket,retAddr,game,playerNumber):
+        """Initializes the Connection Library.
+
+        Args:
+            parent (NetworkServer): The server which makes this connection.
+            player (PlayerState): The player who is using this connection.
+            socket (socket object): The socket object for the connection.
+            retAddr (address info): The return address for the connection.
+            game (OverallState): The Game whic is using this connection.
+            playerNumber (int): The index of the player in the game.
+        """
         threading.Thread.__init__(self)
         self.communicator = socket
         self.active   = True 
@@ -53,6 +73,9 @@ class Connection(threading.Thread):
         self.parent = parent
         
     def run(self):
+        """
+        Function handling the running of the thread.
+        """
         recvThread = threading.Thread(target=self.receive)
         sendThread = threading.Thread(target=self.send)
         recvThread.start()
@@ -66,6 +89,9 @@ class Connection(threading.Thread):
             return
 
     def receive(self):
+        """
+        Threading function for perodically recieving user data its activity
+        """
         while self.active:
             try:
                 message = recieveMessage(self.communicator)
@@ -90,6 +116,9 @@ class Connection(threading.Thread):
                 continue
 
     def send(self):
+        """
+        Threading function for perodically sending game states to user.
+        """
         while self.active:
             T.sleep(STATE_SYNC_LATENCY)
             cpState = self.parent.parent.getGameCopy()
