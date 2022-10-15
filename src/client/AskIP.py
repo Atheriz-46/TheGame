@@ -1,5 +1,6 @@
 import tkinter as tk
-from common import constants
+    
+from ..common import constants
 
 
 class AskIP(tk.Tk):

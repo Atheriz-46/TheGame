@@ -1,5 +1,5 @@
-from common.geometry import *
-from common.constants import *
+from .geometry import *
+from .constants import *
 
 
 class Bullet(Circle):

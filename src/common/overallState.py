@@ -1,9 +1,9 @@
-import json
-from common.tick import *
-from common.constants import *
-from common.playerState import PlayerState
-from random import random, seed, randint
-from common.balloonState import Balloon
+from random import  seed, randint
+
+from .tick import *
+from .constants import *
+from .playerState import PlayerState
+from .balloonState import Balloon
 
 
 class OverallState:

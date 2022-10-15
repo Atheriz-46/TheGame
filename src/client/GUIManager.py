@@ -1,7 +1,8 @@
 from tkinter import Tk
-from Menu import StartMenu,EndMenu
-from ScoreBoard import ScoreBoard
-from Graphics import Graphics
+
+from .Menu import StartMenu,EndMenu
+from .ScoreBoard import ScoreBoard
+from .Graphics import Graphics
 # import keyboard
 class GUIManager(Tk):
     """The main GUI manager class for the game

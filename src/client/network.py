@@ -1,13 +1,11 @@
 import socket
 import threading
-import re
-import argparse
-import time as T
-from common.tick import *
-import sys
-from common.constants import *
-from common.networkLibrary import *
 import json
+import time as T
+
+from ..common.tick import *
+from ..common.constants import *
+from ..common.networkLibrary import *
 
 
 class NetworkClient:

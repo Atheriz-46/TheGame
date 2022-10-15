@@ -1,8 +1,7 @@
-from client.AskIP import AskIP, ServerData
-from client.Client import Client
-from common.constants import IP, port
-
 from time import sleep
+
+from .AskIP import AskIP, ServerData
+from .Client import Client
 
 sleep(2)
 data = ServerData()

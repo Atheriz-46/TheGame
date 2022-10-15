@@ -1,7 +1,8 @@
 from tkinter import Canvas, Frame
 import math
-from common.constants import *
-from common.tick import *
+
+from ..common.constants import *
+from ..common.tick import *
 class Graphics(Frame):
     def __init__(self,parent):
         """Initialises the Grapics object

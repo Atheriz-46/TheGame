@@ -1,5 +1,5 @@
 import time as T
-from common.constants import *
+from .constants import *
 
 
 def tickValue(x):
