@@ -6,6 +6,7 @@ from .network import NetworkClient
 from ..common.gameMode import GameMode
 from ..common.overallState import OverallState
 from ..common.tick import *
+from ..common.constants import *
 
 class Client:
     """
